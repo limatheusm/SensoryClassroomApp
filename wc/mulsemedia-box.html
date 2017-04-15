@@ -99,14 +99,23 @@
                 var duration = (effect.endTime - video.currentTime) * 1000;
                 var withinBounds = (currentTime >= effect.startTime) && (currentTime < effect.endTime);
 
+                if (!isNaN(effect.fade) && effect.executing){
+                    
+                    effect.fadeIntensity += effect.fade;
+                    textIntensity.innerHTML = (effect.type === 'scent') 
+                                            ? effect.type_scent + " with " + (effect.fadeIntensity.toFixed(2)) + " intensity" 
+                                            : (effect.fadeIntensity.toFixed(2));
+                }
 
-                if(!video.paused){
-                    if(withinBounds && !effect.executing){
-                        //console.log("effect "+effect.type+" with "+effect.intensity+" intensity started - "+video.getAttribute('src'));                        
+                if (!video.paused){
+                    if (withinBounds && !effect.executing){
+                        
                         if (effect.type === 'vibration') vibrate(duration);
+
                         textIntensity.innerHTML = (effect.type === 'scent') 
                                                 ? effect.type_scent + " with " + effect.intensity + " intensity" 
                                                 : effect.intensity;
+                        
                         effect.executing = true;
                     }
 
@@ -114,6 +123,7 @@
                         //console.log("effect "+effect.type+" with "+effect.intensity+" intensity finished");
                         effect.executing = false;
                         textIntensity.innerHTML = '-';
+                        effect.fadeIntensity = effect.intensity; //zera fading
                         if (effect.type === 'vibration') vibrate(0);
                     }
 
@@ -121,6 +131,7 @@
                         //console.log("effect "+effect.type+" with "+effect.intensity+" intensity stoped");
                         effect.executing = false;
                         textIntensity.innerHTML = '-';
+                        effect.fadeIntensity = effect.intensity; //zera fading
                         if (effect.type === 'vibration') vibrate(0);
                     }
                 }
@@ -166,23 +177,40 @@
                 var duration = (effect.endTime - effect.startTime) * 1000;
                 var thisShadowRoot = effect.parentNode.shadowRoot;
                 var textIntensity = thisShadowRoot.getElementById('intensity-'+effect.type);
-                
+                var timer;
+
                 setTimeout(function () {
                     // StartEffect
-                    console.log('running '+effect.type);
-
-                    textIntensity.innerHTML = (effect.type === 'scent') 
-                        ? effect.type_scent + " with " + effect.intensity + " intensity" 
-                        : effect.intensity;
-
+                    effect.executing = true;
+                    /*console.log('running '+effect.type);*/
                     if (effect.type === 'vibration') vibrate(duration);
+                    if (!isNaN(effect.fade)){
+                        
+                        timer = setInterval(function () {
+                            effect.fadeIntensity += effect.fade;
+                            textIntensity.innerHTML = (effect.type === 'scent') 
+                                                    ? effect.type_scent + " with " + (effect.fadeIntensity.toFixed(2)) + " intensity" 
+                                                    : (effect.fadeIntensity.toFixed(2));
+                        },250);                    
+                    }
+                    else {
+                        textIntensity.innerHTML = (effect.type === 'scent') 
+                            ? effect.type_scent + " with " + effect.intensity + " intensity" 
+                            : effect.intensity;
+                    }
+                    
                 },  effect.startTime*1000);
 
-                setTimeout(function () {
-                    //Finish Effect
-                    console.log('finished '+effect.type);
-                    textIntensity.innerHTML = '-';
-                },  effect.endTime*1000);
+                if (!(effect.endTime === 'infinite')){
+                    setTimeout(function () {
+                        //Finish Effect
+                        effect.executing = false;
+                        effect.fadeIntensity = effect.intensity;
+                        clearInterval(timer);
+                        /*console.log('finished '+effect.type);*/
+                        textIntensity.innerHTML = '-';
+                    },  effect.endTime*1000);
+                }                
             }
 
             /*window.runEffect = function (type, intensity, duration) {
@@ -211,9 +239,11 @@
             vibrationEffect.createdCallback = function() {
 
                 //Get Tag Attributes
-                this.intensity = this.getAttribute('intensity');
+                this.intensity = parseFloat(this.getAttribute('intensity'));
                 this.startTime = this.getAttribute('startTime');
-                this.endTime = this.getAttribute('endTime'); 
+                this.endTime = this.getAttribute('endTime');                
+                this.fade = parseFloat(this.getAttribute('fade')); 
+                this.fadeIntensity = parseFloat(this.intensity); 
             };
             
             /*** WIND EFFECT ***/ 
@@ -229,9 +259,11 @@
             windEffect.createdCallback = function() {
                 
                 //Get Tag Attributes
-                this.intensity = this.getAttribute('intensity');
+                this.intensity = parseFloat(this.getAttribute('intensity'));
                 this.startTime = this.getAttribute('startTime');
-                this.endTime = this.getAttribute('endTime');
+                this.endTime = this.getAttribute('endTime');                
+                this.fade = parseFloat(this.getAttribute('fade')); 
+                this.fadeIntensity = parseFloat(this.intensity);
             };
 
             /*** Light EFFECT ***/ 
@@ -246,10 +278,12 @@
             //Register a createdCallback
             lightEffect.createdCallback = function() {
 
-                //Get Tag Attributes
-                this.intensity = this.getAttribute('intensity');
+                ///Get Tag Attributes
+                this.intensity = parseFloat(this.getAttribute('intensity'));
                 this.startTime = this.getAttribute('startTime');
-                this.endTime = this.getAttribute('endTime'); 
+                this.endTime = this.getAttribute('endTime');                
+                this.fade = parseFloat(this.getAttribute('fade')); 
+                this.fadeIntensity = parseFloat(this.intensity);
             };
 
             /*** Fog EFFECT ***/ 
@@ -265,9 +299,11 @@
             fogEffect.createdCallback = function() {
 
                 //Get Tag Attributes
-                this.intensity = this.getAttribute('intensity');
+                this.intensity = parseFloat(this.getAttribute('intensity'));
                 this.startTime = this.getAttribute('startTime');
-                this.endTime = this.getAttribute('endTime'); 
+                this.endTime = this.getAttribute('endTime');                
+                this.fade = parseFloat(this.getAttribute('fade')); 
+                this.fadeIntensity = parseFloat(this.intensity);
             };
 
             /*** Temperature EFFECT ***/ 
@@ -278,14 +314,17 @@
             temperatureEffect.startTime = 0;
             temperatureEffect.endTime = 0;
             temperatureEffect.executing = false;
+            //temperatureEffect.fade = false;
 
             //Register a createdCallback
             temperatureEffect.createdCallback = function() {
 
                 //Get Tag Attributes
-                this.intensity = this.getAttribute('intensity');
+                this.intensity = parseFloat(this.getAttribute('intensity'));
                 this.startTime = this.getAttribute('startTime');
-                this.endTime = this.getAttribute('endTime'); 
+                this.endTime = this.getAttribute('endTime');                
+                this.fade = parseFloat(this.getAttribute('fade')); 
+                this.fadeIntensity = parseFloat(this.intensity);
             };
 
             /* WATER SPRAY */
@@ -299,9 +338,11 @@
             //Register a createdCallback
             waterSpray.createdCallback = function() {
                 //Get Tag Attributes
-                this.intensity = this.getAttribute('intensity');
+                this.intensity = parseFloat(this.getAttribute('intensity'));
                 this.startTime = this.getAttribute('startTime');
-                this.endTime = this.getAttribute('endTime');
+                this.endTime = this.getAttribute('endTime');                
+                this.fade = parseFloat(this.getAttribute('fade')); 
+                this.fadeIntensity = parseFloat(this.intensity);
             };
 
             /* SCENT EFFECT */
@@ -316,9 +357,11 @@
             scentEffect.createdCallback = function() {
                 
                 //Get Tag Attributes
-                this.intensity = this.getAttribute('intensity');
+                this.intensity = parseFloat(this.getAttribute('intensity'));
                 this.startTime = this.getAttribute('startTime');
-                this.endTime = this.getAttribute('endTime');
+                this.endTime = this.getAttribute('endTime');                
+                this.fade = parseFloat(this.getAttribute('fade')); 
+                this.fadeIntensity = parseFloat(this.intensity);
                 this.type_scent = this.getAttribute('type_scent');
             };
 
@@ -356,17 +399,6 @@
                 }                
                 return sibs;
             }           
-
-            /*Image Effect*/            
-            $('#effect').on('click', function () {
-                /*runEffect('cheirin de sal', 50, 3);*/
-                var animation = 'animated pulse';
-                var animationend = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
-                $('img').addClass(animation).one(animationend, function () {
-                    $(this).removeClass(animation);
-                });
-            });
-
 
         }());
 
