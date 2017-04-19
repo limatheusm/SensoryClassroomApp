@@ -2,11 +2,6 @@ $(function() {
 
 
 	/*Questions*/
-	/*var listOfQuestions = ["Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
-						"Vivamus eros felis, ultricies ac auctor in, tristique in nisl?",
-						"Nam condimentum, quam non pretium vestibulum, tellus erat scelerisque lorem, non rhoncus diam elit vitae leo?",
-						"Nullam commodo accumsan tincidunt?",
-						"Cras volutpat lorem non nunc volutpat rutrum?"];*/
 	
 	var Question = function (title, alternatives, answer){
 		if (title) this.title = title;

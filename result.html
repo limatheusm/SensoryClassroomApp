@@ -108,6 +108,8 @@ $(function () {
 	else if (result >= 70)
 		performance.innerHTML = 'Nice! :)';
 	else if (result < 70){
+        $(box).append("<audio id=\"audio\" src=\"audio/raul.wav\" autoplay></audio>");
+
 		effectsHTML =
 			"<mulsemedia-box>\n"+
 			"	<vibration-effect intensity='80.0' startTime='0' endTime='5'></vibration-effect>\n"+
@@ -119,7 +121,7 @@ $(function () {
 		effects = $('mulsemedia-box').children();
 
 		effects.each(function () {
-			/* Parametro: lista de tags efeitos com parent mulsemedia-box */
+			/* Parametro: tag effect com parent mulsemedia-box */
 			runEffect(this);
 		});
 
