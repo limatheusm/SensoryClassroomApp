@@ -71,15 +71,19 @@
             var mulsemediaBox = Object.create(HTMLElement.prototype);
 
             /*BOX EFFECTS*/
+
             mulsemediaBox.createdCallback = function () {
                 //Grab the contents of the template
                 var clone = document.importNode(template.content, true);
                 //Add the template contents to the Shadow DOM
                 this.createShadowRoot().appendChild(clone);
+
+                this.idBind = this.getAttribute('idBind');
+                this.onStart = this.getAttribute('onStart');
             };
 
             /*List of the media*/
-            var listMedia = document.querySelectorAll('audio, video, img, mulsemedia-box');
+            var listMedia = document.querySelectorAll('mulsemedia-box');
 
             /*Object Media representa a midia que contem efeitos MS*/
             var Media = function (element, list_effects) {
@@ -139,36 +143,59 @@
                 }
             };
 
+            /*
+              Funcao que verifica qual tipo de midia e seus atributos
+              e Starta o time adequado
+            */
             Media.prototype.startTimerListener = function() {
                 var length = this.list_effects.length;
                 var media = this;
                 var list = this.list_effects;
                 var element = this.element;
 
-                //console.log(length);
+                if (element.tagName === 'MULSEMEDIA-BOX'){
+                  var idBind = element.getAttribute('idBind');
+                  var onStart = element.getAttribute('onStart');
+                  var mulsemediaBox = element;
 
-                if (element.tagName === 'VIDEO'){
-                    element.addEventListener("timeupdate", function () {
-                       for (var i = 0; i < length; i++) {
-                           media.syncTime(element, list[i]);//
-                       }
-                    }, false);
-                }
-                else if (element.tagName === 'MULSEMEDIA-BOX'){
-                    var idBindVideo = "#"+element.id.split("-")[1];
-                    element = document.querySelector(idBindVideo);
-                    if (element) {//caso seja video
+                  element = document.getElementById(idBind);
+                  // Video - onTimeUpdate
+                  if (element) {
+                    if (element.tagName === 'VIDEO') {//caso seja video
                         element.addEventListener("timeupdate", function () {
                            for (var i = 0; i < length; i++) {
                                media.syncTime(element, list[i]);//
                            }
                         }, false);
                     }
-                }
 
+                    // Img - onStart
+                    if (element.tagName === 'IMG') {
+
+                      if (onStart) {
+                        var type = document.getElementById(onStart);
+                        if (type.tagName === 'BUTTON' || type.tagName === 'A'){
+                          $(type).click(function () {
+                            $(mulsemediaBox).children().each(function () {
+                              runEffect(this);
+                            });
+                          });
+                        }
+                      }
+                      else {
+                        console.log("ERROR - Attribute onStart is undefined");
+                      }
+
+                    }
+
+                  }
+                  else {
+                    console.log("ERROR - MulsemediaBox doesn't have an id");
+                  }
+                }
             };
 
-            window.runEffect = function (effect) {
+            runEffect = function (effect) {
                 //var duration = effect.duration * 1000;
                 var duration = (effect.endTime - effect.startTime) * 1000;
                 var thisShadowRoot = effect.parentNode.shadowRoot;
