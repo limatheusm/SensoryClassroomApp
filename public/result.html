@@ -16,11 +16,11 @@
 		<div class="row">
 			<div class="col-xs-12">
 				<h1>Your result is</h1>
-				
+
 				<h3 id="result"></h3>
 				<hr>
 				<h1>Details:</h1>
-			</div>			
+			</div>
 		</div>
 	</header><!-- /header -->
 
@@ -31,10 +31,10 @@
 				<div id="box-here" class="col-xs-12">
 
 					<ul class="list-group"><!-- Details Questions Fill dynamically --></ul>
-					
+
 					<!-- Box associada ao parent div -->
 
-					<h1 id="performance"></h1>					
+					<h1 id="performance"></h1>
 				</div>
 			</div>
 
@@ -42,9 +42,9 @@
 			<div class="row">
 			    <div class="col-xs-6 col-xs-offset-3">
 			        <button type="button" class="btn btn-custom btn-block" onclick="location.href='index.html'">home</button>
-			    </div>               
-			</div>				
-		</div>				
+			    </div>
+			</div>
+		</div>
 	</section>
 
 	 <!-- Footer -->
@@ -55,19 +55,19 @@
                     <p>Copyright &copy; Your App MulseMedia 2017</p>
                 </div>
             </div>
-        </div>        
+        </div>
     </footer>
 </body>
 <script>
 $(function () {
 
 	var result = parseFloat(localStorage.getItem("result"));
-	
+
 	if (result)
 		document.getElementById("result").innerHTML = result+'%';
 	else
 		document.getElementById("result").innerHTML = 'Try it!';
-	
+
 	var performance = document.getElementById("performance");
     var effectsHTML = "";
     var effects;
@@ -134,17 +134,15 @@ $(function () {
 	//console.log(list);
 	for (var i = 0; i < list.length; i++) {
 		var title = list[i].title;
-		var isCorrect = list[i].isCorrect;
-		var answer = list[i].alternatives[parseInt(list[i].answer)-1];
-		//console.log(isCorrect)
+		var isCorrect = list[i].answer;
 		if(isCorrect){
-			$("ul").append("<li class='list-group-item list-group-item-success'>"+title+" <br> <strong>Answer:</strong> "+answer+"</li>");
+			$("ul").append("<li class='list-group-item list-group-item-success'>"+title+" <br> <strong>Correct answer!</strong></li>");
 		}
 		else {
-			$("ul").append("<li class='list-group-item list-group-item-danger'>"+title+" <br> <strong>Answer:</strong> "+answer+"</li>");
+			$("ul").append("<li class='list-group-item list-group-item-danger'>"+title+" <br> <strong>Wrong Answer!</strong> </li>");
 		}
 	}
 });
-	
+
 </script>
 </html>

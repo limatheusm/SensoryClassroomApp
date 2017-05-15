@@ -8,17 +8,17 @@
         color: rgba(102, 102, 102, 0.5);
         border: 1px solid rgba(102, 102, 102, 0.5);
         background-color:rgba(0, 0, 0, 0);
-    }    
+    }
     .intensity {
         font-family: "Times New Roman", Times, serif;
         font-size: 20px;
         color: #ff4411;
     }
-    </style>        
+    </style>
     <!-- Box Effects -->
     <!-- <div class="container"> -->
-        <div class="row">                
-            <div class="col-xs-12">                    
+        <div class="row">
+            <div class="col-xs-12">
                 <div class="col-xs-2 effect-box text-center">
                     Wind Effect<br> <span id="intensity-wind" class="intensity">-</span>
                 </div>
@@ -43,9 +43,9 @@
                 </div>
                 <div class="col-xs-12 effect-box text-center">
                     Scent <br> <span id="intensity-scent" class="intensity">-</span>
-                </div>  
-            </div>  
-        </div> 
+                </div>
+            </div>
+        </div>
     <!-- </div>   -->
 
 </template>
@@ -53,14 +53,13 @@
 <script>
     var thisDocument = document.currentScript.ownerDocument;
     document.addEventListener("DOMContentLoaded", function(event) {
-        
+
         (function() {
             //var thisDocument = document.currentScript.ownerDocument;
-            
+
             //Get the contents of the template (Polyfill use _currentScript)
-            var template = thisDocument.querySelector('template');            
-            var shadowRoot = [];
-            
+            var template = thisDocument.querySelector('template');
+
             //Create a prototype for this component
             var vibrationEffect = Object.create(HTMLElement.prototype);
             var windEffect = Object.create(HTMLElement.prototype);
@@ -74,12 +73,9 @@
             /*BOX EFFECTS*/
             mulsemediaBox.createdCallback = function () {
                 //Grab the contents of the template
-                //shadowRoot = this.createShadowRoot();
                 var clone = document.importNode(template.content, true);
-                //Add the template contents to the Shadow DOM                
+                //Add the template contents to the Shadow DOM
                 this.createShadowRoot().appendChild(clone);
-                shadowRoot.push(this.shadowRoot);
-                //console.log(this.shadowRoot);
             };
 
             /*List of the media*/
@@ -100,22 +96,22 @@
                 var withinBounds = (currentTime >= effect.startTime) && (currentTime < effect.endTime);
 
                 if (!isNaN(effect.fade) && effect.executing){
-                    
+
                     effect.fadeIntensity += effect.fade;
-                    textIntensity.innerHTML = (effect.type === 'scent') 
-                                            ? effect.type_scent + " with " + (effect.fadeIntensity.toFixed(2)) + " intensity" 
+                    textIntensity.innerHTML = (effect.type === 'scent')
+                                            ? effect.type_scent + " with " + (effect.fadeIntensity.toFixed(2)) + " intensity"
                                             : (effect.fadeIntensity.toFixed(2));
                 }
 
                 if (!video.paused){
                     if (withinBounds && !effect.executing){
-                        
+
                         if (effect.type === 'vibration') vibrate(duration);
 
-                        textIntensity.innerHTML = (effect.type === 'scent') 
-                                                ? effect.type_scent + " with " + effect.intensity + " intensity" 
+                        textIntensity.innerHTML = (effect.type === 'scent')
+                                                ? effect.type_scent + " with " + effect.intensity + " intensity"
                                                 : effect.intensity;
-                        
+
                         effect.executing = true;
                     }
 
@@ -151,9 +147,9 @@
 
                 //console.log(length);
 
-                if (element.tagName === 'VIDEO'){            
-                    element.addEventListener("timeupdate", function () {               
-                       for (var i = 0; i < length; i++) { 
+                if (element.tagName === 'VIDEO'){
+                    element.addEventListener("timeupdate", function () {
+                       for (var i = 0; i < length; i++) {
                            media.syncTime(element, list[i]);//
                        }
                     }, false);
@@ -163,13 +159,13 @@
                     element = document.querySelector(idBindVideo);
                     if (element) {//caso seja video
                         element.addEventListener("timeupdate", function () {
-                           for (var i = 0; i < length; i++) { 
+                           for (var i = 0; i < length; i++) {
                                media.syncTime(element, list[i]);//
                            }
                         }, false);
-                    }                    
+                    }
                 }
-                
+
             };
 
             window.runEffect = function (effect) {
@@ -185,20 +181,20 @@
                     /*console.log('running '+effect.type);*/
                     if (effect.type === 'vibration') vibrate(duration);
                     if (!isNaN(effect.fade)){
-                        
+
                         timer = setInterval(function () {
                             effect.fadeIntensity += effect.fade;
-                            textIntensity.innerHTML = (effect.type === 'scent') 
-                                                    ? effect.type_scent + " with " + (effect.fadeIntensity.toFixed(2)) + " intensity" 
+                            textIntensity.innerHTML = (effect.type === 'scent')
+                                                    ? effect.type_scent + " with " + (effect.fadeIntensity.toFixed(2)) + " intensity"
                                                     : (effect.fadeIntensity.toFixed(2));
-                        },250);                    
+                        },250);
                     }
                     else {
-                        textIntensity.innerHTML = (effect.type === 'scent') 
-                            ? effect.type_scent + " with " + effect.intensity + " intensity" 
+                        textIntensity.innerHTML = (effect.type === 'scent')
+                            ? effect.type_scent + " with " + effect.intensity + " intensity"
                             : effect.intensity;
                     }
-                    
+
                 },  effect.startTime*1000);
 
                 if (!(effect.endTime === 'infinite')){
@@ -207,23 +203,15 @@
                         effect.executing = false;
                         effect.fadeIntensity = effect.intensity;
                         clearInterval(timer);
-                        /*console.log('finished '+effect.type);*/
                         textIntensity.innerHTML = '-';
                     },  effect.endTime*1000);
-                }                
+                }
             }
 
-            /*window.runEffect = function (type, intensity, duration) {
-                duration *= 1000;
-                $('body').append("<div class='col-xs-4 float-box'>"+type+" with "+intensity+"</div>");
-
-                setTimeout(function(){ $("div").remove(".float-box"); console.log('done');}, duration);
-            }*/
-
-            for (var i = 0; i < listMedia.length; i++){                
+            for (var i = 0; i < listMedia.length; i++){
                 new Media(listMedia[i], getAllSiblings(listMedia[i])).startTimerListener();
             }
-            
+
             /*EFFECTS*/
 
             /*** VIBRATION EFFECT ***/
@@ -232,7 +220,7 @@
             vibrationEffect.type = "vibration";
             vibrationEffect.intensity = 0;
             vibrationEffect.startTime = 0;
-            vibrationEffect.endTime = 0;            
+            vibrationEffect.endTime = 0;
             vibrationEffect.executing = false;
 
             //Register a createdCallback
@@ -241,14 +229,14 @@
                 //Get Tag Attributes
                 this.intensity = parseFloat(this.getAttribute('intensity'));
                 this.startTime = this.getAttribute('startTime');
-                this.endTime = this.getAttribute('endTime');                
-                this.fade = parseFloat(this.getAttribute('fade')); 
-                this.fadeIntensity = parseFloat(this.intensity); 
+                this.endTime = this.getAttribute('endTime');
+                this.fade = parseFloat(this.getAttribute('fade'));
+                this.fadeIntensity = parseFloat(this.intensity);
             };
-            
-            /*** WIND EFFECT ***/ 
 
-            //Propertys 
+            /*** WIND EFFECT ***/
+
+            //Propertys
             windEffect.type = "wind";
             windEffect.intensity = 0;
             windEffect.startTime = 0;
@@ -257,16 +245,16 @@
 
             //Register a createdCallback
             windEffect.createdCallback = function() {
-                
+
                 //Get Tag Attributes
                 this.intensity = parseFloat(this.getAttribute('intensity'));
                 this.startTime = this.getAttribute('startTime');
-                this.endTime = this.getAttribute('endTime');                
-                this.fade = parseFloat(this.getAttribute('fade')); 
+                this.endTime = this.getAttribute('endTime');
+                this.fade = parseFloat(this.getAttribute('fade'));
                 this.fadeIntensity = parseFloat(this.intensity);
             };
 
-            /*** Light EFFECT ***/ 
+            /*** Light EFFECT ***/
 
             //Propertys
             lightEffect.type = "light";
@@ -281,12 +269,12 @@
                 ///Get Tag Attributes
                 this.intensity = parseFloat(this.getAttribute('intensity'));
                 this.startTime = this.getAttribute('startTime');
-                this.endTime = this.getAttribute('endTime');                
-                this.fade = parseFloat(this.getAttribute('fade')); 
+                this.endTime = this.getAttribute('endTime');
+                this.fade = parseFloat(this.getAttribute('fade'));
                 this.fadeIntensity = parseFloat(this.intensity);
             };
 
-            /*** Fog EFFECT ***/ 
+            /*** Fog EFFECT ***/
 
             //Propertys
             fogEffect.type = "fog";
@@ -301,12 +289,12 @@
                 //Get Tag Attributes
                 this.intensity = parseFloat(this.getAttribute('intensity'));
                 this.startTime = this.getAttribute('startTime');
-                this.endTime = this.getAttribute('endTime');                
-                this.fade = parseFloat(this.getAttribute('fade')); 
+                this.endTime = this.getAttribute('endTime');
+                this.fade = parseFloat(this.getAttribute('fade'));
                 this.fadeIntensity = parseFloat(this.intensity);
             };
 
-            /*** Temperature EFFECT ***/ 
+            /*** Temperature EFFECT ***/
 
             //Propertys
             temperatureEffect.type = "temperature";
@@ -322,8 +310,8 @@
                 //Get Tag Attributes
                 this.intensity = parseFloat(this.getAttribute('intensity'));
                 this.startTime = this.getAttribute('startTime');
-                this.endTime = this.getAttribute('endTime');                
-                this.fade = parseFloat(this.getAttribute('fade')); 
+                this.endTime = this.getAttribute('endTime');
+                this.fade = parseFloat(this.getAttribute('fade'));
                 this.fadeIntensity = parseFloat(this.intensity);
             };
 
@@ -340,8 +328,8 @@
                 //Get Tag Attributes
                 this.intensity = parseFloat(this.getAttribute('intensity'));
                 this.startTime = this.getAttribute('startTime');
-                this.endTime = this.getAttribute('endTime');                
-                this.fade = parseFloat(this.getAttribute('fade')); 
+                this.endTime = this.getAttribute('endTime');
+                this.fade = parseFloat(this.getAttribute('fade'));
                 this.fadeIntensity = parseFloat(this.intensity);
             };
 
@@ -355,12 +343,12 @@
 
             //Register a createdCallback
             scentEffect.createdCallback = function() {
-                
+
                 //Get Tag Attributes
                 this.intensity = parseFloat(this.getAttribute('intensity'));
                 this.startTime = this.getAttribute('startTime');
-                this.endTime = this.getAttribute('endTime');                
-                this.fade = parseFloat(this.getAttribute('fade')); 
+                this.endTime = this.getAttribute('endTime');
+                this.fade = parseFloat(this.getAttribute('fade'));
                 this.fadeIntensity = parseFloat(this.intensity);
                 this.type_scent = this.getAttribute('type_scent');
             };
@@ -384,26 +372,26 @@
 
             //this will start from the first child of the current element's and get all the siblings
             function getAllSiblings(elem, filter) {
-                var sibs = [];           
-                var patt = new RegExp("WATER-SPRAY|((VIBRATION|WIND|TEMPERATURE|FOG|LIGHT|SCENT)-EFFECT$)");                     
+                var sibs = [];
+                var patt = new RegExp("WATER-SPRAY|((VIBRATION|WIND|TEMPERATURE|FOG|LIGHT|SCENT)-EFFECT$)");
                 /*Video -> childrens  /  img -> siblings*/
                 if (elem.tagName === 'VIDEO' || elem.tagName === 'MULSEMEDIA-BOX'){
-                    elem = elem.firstChild; 
-                }                              
-                                                
+                    elem = elem.firstChild;
+                }
+
                 if (elem !== null){
                     do {
                         if (elem.nodeType === 3) continue; // text node
                         if ((!filter || filter(elem)) && patt.test(elem.tagName)) sibs.push(elem);
                     } while (elem = elem.nextSibling)
-                }                
+                }
                 return sibs;
-            }           
+            }
 
         }());
 
     });
 
-    
+
 
 </script>

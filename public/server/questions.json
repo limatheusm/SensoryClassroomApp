@@ -1,0 +1,27 @@
+[
+   {
+      "title" : "Check the box that does not represent a source of energy.",
+	  "alternatives" : ["Earth power energy", "Wind power energy", "Solar energy","Nuclear energy"],
+	  "answer" : "1"
+   },
+   {
+      "title" : "Check the box that does not represent a fossil fuel.",
+	  "alternatives" : ["Natural gas", "Coal", "Petroleum","Biomass"],
+	  "answer" : "4"
+   },
+   {
+      "title" : "Check the box that does not represent a source of energy.",
+	  "alternatives" : ["Coal", "Uranium", "Petroleum","Sun"],
+	  "answer" : "4"
+   },
+   {
+      "title" : "About Solar Energy, check the box that correctly fills the blanks in the sentence: Solar Energy is the type of energy that comes from the rising of the ____ in the form of _____ and _____.",
+	  "alternatives" : ["sun, heat, light", "uranium, petroleum, coal", "sun, stars, moon","sun, heat, light"],
+	  "answer" : "4"
+   },
+   {
+      "title" : "About Hydraulic Energy, check the box that correctly fills the blanks in the sentence: Hydraulic Energy is the type of energy that uses the power of (a)(an)(the)______ to produce energy like (a)(an)(the) ______or (a)(an)(the) ______",
+	  "alternatives" : ["ice, snow, fog", "uranium, petroleum, coal", "moving water, wave, a water fall","sun, stars, moon"],
+	  "answer" : "3"
+   }
+]
