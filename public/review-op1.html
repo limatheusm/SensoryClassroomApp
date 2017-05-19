@@ -6,9 +6,7 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="import" href="wc/mulsemedia-box.html">
-    <script src="js/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/review.js"></script>
+
     <title>Sensory Classroom</title>
 </head>
 
@@ -35,7 +33,19 @@
 						<p class="text-center">“Hydraulic Energy is the type of energy that uses the power of moving water to produce energy like a wave or a water fall”</p>
 						<!-- Effects -->
 						<!-- Box associada ao parent div -->
+
+
+
+
 						<mulsemedia-box idbind="img1" onStart="buttonImg1">
+              <conditional-effect service="classService" ifReturn="100">
+                <vibration-effect intensity="50.0" startTime="1" endTime="5" fade="0.5"></vibration-effect>
+                <!-- <temperature-effect intensity="80.0" startTime="2" endTime="4"></temperature-effect> -->
+              </conditional-effect>
+
+                <conditional-effect service="classService" ifReturn="100">
+                  <temperature-effect intensity="80.0" startTime="2" endTime="4"></temperature-effect>
+                </conditional-effect>
 							<water-spray intensity="40.0" startTime="1" endTime="4"></water-spray>
 						</mulsemedia-box>
 					</div>
@@ -89,4 +99,10 @@
         </div>
     </footer>
 </body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.4/socket.io.min.js"></script>
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/review.js"></script>
+
 </html>

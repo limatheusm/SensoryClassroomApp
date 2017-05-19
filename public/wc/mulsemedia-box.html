@@ -68,6 +68,7 @@
             var temperatureEffect = Object.create(HTMLElement.prototype);
             var waterSpray = Object.create(HTMLElement.prototype);
             var scentEffect = Object.create(HTMLElement.prototype);
+            var conditionalEffect = Object.create(HTMLElement.prototype);
             var mulsemediaBox = Object.create(HTMLElement.prototype);
 
             /*BOX EFFECTS*/
@@ -83,15 +84,16 @@
             };
 
             /*List of the media*/
-            var listMedia = document.querySelectorAll('mulsemedia-box');
+            var listMulsemediaBox = document.querySelectorAll('mulsemedia-box');
 
             /*Object Media representa a midia que contem efeitos MS*/
-            var Media = function (element, list_effects) {
+            var MulsemediaBox = function (element, list_effects, conditional_effects) {
                 if (element) this.element = element;
                 if (list_effects) this.list_effects = list_effects;
+                if (conditional_effects) this.conditional_effects = conditional_effects;
             };
 
-            Media.prototype.syncTime = function (video, effect){
+            MulsemediaBox.prototype.syncTime = function (video, effect){
                 //get spans from shadowRoot
                 var thisShadowRoot = effect.parentNode.shadowRoot;
                 var textIntensity = thisShadowRoot.getElementById('intensity-'+effect.type);
@@ -147,37 +149,40 @@
               Funcao que verifica qual tipo de midia e seus atributos
               e Starta o time adequado
             */
-            Media.prototype.startTimerListener = function() {
+            MulsemediaBox.prototype.startTimerListener = function(list) {
                 var length = this.list_effects.length;
-                var media = this;
-                var list = this.list_effects;
+                var mulsemediaBox = this;
                 var element = this.element;
 
-                if (element.tagName === 'MULSEMEDIA-BOX'){
+                //console.log(list);
+
+                if (element.tagName === 'MULSEMEDIA-BOX') {
+
                   var idBind = element.getAttribute('idBind');
                   var onStart = element.getAttribute('onStart');
-                  var mulsemediaBox = element;
 
-                  element = document.getElementById(idBind);
-                  // Video - onTimeUpdate
-                  if (element) {
-                    if (element.tagName === 'VIDEO') {//caso seja video
-                        element.addEventListener("timeupdate", function () {
+                  elementBind = document.getElementById(idBind);
+
+                  if (elementBind) {
+
+                    // Video - onTimeUpdate
+                    if (elementBind.tagName === 'VIDEO') {
+                        elementBind.addEventListener("timeupdate", function () {
                            for (var i = 0; i < length; i++) {
-                               media.syncTime(element, list[i]);//
+                               mulsemediaBox.syncTime(elementBind, list[i]);
                            }
                         }, false);
                     }
 
                     // Img - onStart
-                    if (element.tagName === 'IMG') {
+                    if (elementBind.tagName === 'IMG') {
 
                       if (onStart) {
                         var type = document.getElementById(onStart);
                         if (type.tagName === 'BUTTON' || type.tagName === 'A'){
                           $(type).click(function () {
-                            $(mulsemediaBox).children().each(function () {
-                              runEffect(this);
+                            $.each(list, function () {
+                              mulsemediaBox.runEffect(this);
                             });
                           });
                         }
@@ -195,17 +200,19 @@
                 }
             };
 
-            runEffect = function (effect) {
+            MulsemediaBox.prototype.runEffect = function (effect) {
                 //var duration = effect.duration * 1000;
                 var duration = (effect.endTime - effect.startTime) * 1000;
-                var thisShadowRoot = effect.parentNode.shadowRoot;
+                var thisShadowRoot = (effect.parentNode.tagName === 'MULSEMEDIA-BOX') ?
+                                        effect.parentNode.shadowRoot :
+                                        effect.parentNode.parentNode.shadowRoot; // first parent is conditional-effect
                 var textIntensity = thisShadowRoot.getElementById('intensity-'+effect.type);
                 var timer;
 
                 setTimeout(function () {
                     // StartEffect
                     effect.executing = true;
-                    /*console.log('running '+effect.type);*/
+                    console.log('running '+effect.type);
                     if (effect.type === 'vibration') vibrate(duration);
                     if (!isNaN(effect.fade)){
 
@@ -235,8 +242,72 @@
                 }
             }
 
-            for (var i = 0; i < listMedia.length; i++){
-                new Media(listMedia[i], getAllSiblings(listMedia[i])).startTimerListener();
+            MulsemediaBox.prototype.verifyConditionalEffect = function () {
+
+              var answer = ['1','4','4','4','3'];
+              var mulsemediaBox = this;
+
+              // ToDo: Gerar fluxo de acordo com o serviço. Problema: 2 responses
+
+              //console.log(mulsemediaBox.conditional_effects);
+
+              $.each(mulsemediaBox.conditional_effects, function () {
+
+                var socket = io('http://localhost:3000');
+                var currentConditionEffect = this;
+
+              	// Request questions
+              	socket.on('connect', function(){
+                  console.log("conectado!");
+              		socket.emit('getResult', answer);
+              	});
+
+                // Returned of the server
+              	socket.on('results', function(results){
+              			/*
+              				"results" is an array with replies (true or false) returned from the server
+              			*/
+              			var percentualResult = 0;
+              			for (var i = 0; i < results.length; i++) {
+              				if (results[i]) {
+              					percentualResult += (100 / results.length);
+              				}
+              			}
+              			socket.emit('end');
+                    //console.log(currentConditionEffect.ifReturn);
+                    if (percentualResult === parseFloat(currentConditionEffect.ifReturn)){
+
+                      mulsemediaBox.startTimerListener($(currentConditionEffect).children());
+                    }
+
+                });
+              });
+
+
+            };
+
+
+
+
+            for (var i = 0; i < listMulsemediaBox.length; i++){
+              var aux = new MulsemediaBox(listMulsemediaBox[i],
+                                    $(listMulsemediaBox[i]).children().not('conditional-effect'),
+                                    $(listMulsemediaBox[i]).children('conditional-effect'));
+
+              aux.startTimerListener(aux.list_effects);
+
+              if (aux.conditional_effects.length) {
+                aux.verifyConditionalEffect();
+              }
+            }
+
+
+            function connectClassService(socket, message, parameters) {
+              // Request questions
+            	socket.on('connect', function(){
+                console.log("conectado!");
+            		socket.emit(message, parameters);
+            	});
             }
 
             /*EFFECTS*/
@@ -380,6 +451,17 @@
                 this.type_scent = this.getAttribute('type_scent');
             };
 
+            /* CONDITIONAL EFFECT */
+            // Register a createdCallback
+            conditionalEffect.createdCallback = function () {
+
+              // Get Tag Attributes
+              this.service = this.getAttribute('service');
+              this.ifReturn = this.getAttribute('ifReturn');
+
+            };
+
+
             /*** Register the elements with the document (thatDoc) ***/
             document.registerElement('vibration-effect', {prototype: vibrationEffect});
             document.registerElement('wind-effect', {prototype: windEffect});
@@ -388,6 +470,7 @@
             document.registerElement('temperature-effect', {prototype: temperatureEffect});
             document.registerElement('water-spray', {prototype: waterSpray});
             document.registerElement('scent-effect', {prototype: scentEffect});
+            document.registerElement('conditional-effect', {prototype: conditionalEffect});
             document.registerElement('mulsemedia-box', {prototype: mulsemediaBox});
 
             /*** support functions ***/
@@ -397,23 +480,24 @@
                     console.log('Not supported by browser');
             }
 
-            //this will start from the first child of the current element's and get all the siblings
-            function getAllSiblings(elem, filter) {
-                var sibs = [];
-                var patt = new RegExp("WATER-SPRAY|((VIBRATION|WIND|TEMPERATURE|FOG|LIGHT|SCENT)-EFFECT$)");
-                /*Video -> childrens  /  img -> siblings*/
-                if (elem.tagName === 'VIDEO' || elem.tagName === 'MULSEMEDIA-BOX'){
-                    elem = elem.firstChild;
-                }
 
-                if (elem !== null){
-                    do {
-                        if (elem.nodeType === 3) continue; // text node
-                        if ((!filter || filter(elem)) && patt.test(elem.tagName)) sibs.push(elem);
-                    } while (elem = elem.nextSibling)
-                }
-                return sibs;
-            }
+            //this will start from the first child of the current element's and get all the siblings
+            // function getAllSiblings(elem, filter) {
+            //     var sibs = [];
+            //     var patt = new RegExp("WATER-SPRAY|((VIBRATION|WIND|TEMPERATURE|FOG|LIGHT|SCENT|CONDITIONAL)-EFFECT$)");
+            //     /*Video -> childrens  /  img -> siblings*/
+            //     if (elem.tagName === 'VIDEO' || elem.tagName === 'MULSEMEDIA-BOX'){
+            //         elem = elem.firstChild;
+            //     }
+            //
+            //     if (elem !== null){
+            //         do {
+            //             if (elem.nodeType === 3) continue; // text node
+            //             if ((!filter || filter(elem)) && patt.test(elem.tagName)) sibs.push(elem);
+            //         } while (elem = elem.nextSibling)
+            //     }
+            //     return sibs;
+            // }
 
         }());
 
