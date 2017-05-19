@@ -244,67 +244,38 @@
 
             MulsemediaBox.prototype.verifyConditionalEffect = function () {
 
-              var answer = ['1','4','4','4','3'];
-              var mulsemediaBox = this;
+             var answer = ['1','4','4','4','3'];
+             var mulsemediaBox = this;
+             var listService = [];
+             var conditionalClass = $('conditional-effect[service="classService"]');
 
-              // ToDo: Gerar fluxo de acordo com o serviço. Problema: 2 responses
-
-              // console.log(mulsemediaBox.conditional_effects[0].getAttribute('service'));
-              var listService = [];
-              $.each(mulsemediaBox.conditional_effects, function () {
-                var service = this.getAttribute('service');
-                var conditionEffect = this;
-
-                // Verifica se existe o serviço, para evitar recalculos
-                if (listService.indexOf(service) === -1) {
-                  listService.push(service);
-
-                  if (service === 'classService') {
-                    var percentualResult = 0;
-                    var socket = io('http://localhost:3000');
-
-                    // Request questions
-                    socket.on('connect', function(){
-                      console.log("conectado!");
-                      socket.emit('getResult', answer);
-                    });
-
-                    // Returned of the server
-                    socket.on('results', function(results){
-                        /*
-                          "results" is an array with replies (true or false) returned from the server
-                        */
-
-                        for (var i = 0; i < results.length; i++) {
-                          if (results[i]) {
-                            percentualResult += (100 / results.length);
-                          }
-                        }
-                        socket.emit('end');
-                        if (percentualResult === parseFloat(conditionEffect.ifReturn)) {
-                          mulsemediaBox.startTimerListener($(conditionEffect).children());
-                        }
-                        // $.each(mulsemediaBox.conditional_effects, function () {
-                        //
-                        //   var currentConditionEffect = this;
-                        //     if (percentualResult === parseFloat(currentConditionEffect.ifReturn)) {
-                        //       mulsemediaBox.startTimerListener($(currentConditionEffect).children());
-                        //     }
-                        // });
-                    });
-                  }
-
-                }
-
-              });
+             $(conditionalClass).on("responseClassService", function (event, response) {
+               if (parseFloat(this.ifReturn) === response) {
+                 mulsemediaBox.startTimerListener($(this).children());
+               }
+             });
 
 
 
+             $.each(mulsemediaBox.conditional_effects, function () {
+               var service = this.getAttribute('service');
+               var conditionEffect = this;
 
-            };
+               // Verifica se ja solicitou o serviço, para evitar recalculos
+               if (listService.indexOf(service) === -1) {
+                 listService.push(service);
 
+                 if (service === 'classService') {
+                   //var percentualResult = 0;
+                   var socket = io('http://localhost:3000');
+                   connectClassService(socket, 'getResult', answer, conditionalClass);
+                 }
+                 else if (service === 'dealService'){}
 
+               }
 
+             });
+           };
 
             for (var i = 0; i < listMulsemediaBox.length; i++){
               var aux = new MulsemediaBox(listMulsemediaBox[i],
@@ -319,12 +290,26 @@
             }
 
 
-            function connectClassService(socket, message, parameters) {
+            function connectClassService(socket, message, parameters, element) {
               // Request questions
             	socket.on('connect', function(){
                 console.log("conectado!");
             		socket.emit(message, parameters);
             	});
+
+              // Returned of the server
+              socket.on('results', function(results){
+                  var percentualResult = 0;
+                  for (var i = 0; i < results.length; i++) {
+                    if (results[i]) {
+                      percentualResult += (100 / results.length);
+                    }
+                  }
+                  socket.emit('end');
+                  // Quando receber resposta do servidor, dispara um evento
+                  $(element).trigger("responseClassService", [percentualResult]);
+
+              });
             }
 
             /*EFFECTS*/
