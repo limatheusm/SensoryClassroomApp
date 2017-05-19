@@ -40,12 +40,8 @@
 						<mulsemedia-box idbind="img1" onStart="buttonImg1">
               <conditional-effect service="classService" ifReturn="100">
                 <vibration-effect intensity="50.0" startTime="1" endTime="5" fade="0.5"></vibration-effect>
-                <!-- <temperature-effect intensity="80.0" startTime="2" endTime="4"></temperature-effect> -->
+                <temperature-effect intensity="80.0" startTime="2" endTime="4"></temperature-effect>
               </conditional-effect>
-
-                <conditional-effect service="classService" ifReturn="100">
-                  <temperature-effect intensity="80.0" startTime="2" endTime="4"></temperature-effect>
-                </conditional-effect>
 							<water-spray intensity="40.0" startTime="1" endTime="4"></water-spray>
 						</mulsemedia-box>
 					</div>
@@ -58,6 +54,10 @@
 						<p class="text-center">“Wind Power Energy is the type of energy that uses the wind produced by the movement of planet earth and the atmospheric phenomena”</p>
 						<!-- Effects -->
 						<mulsemedia-box idBind="img2" onStart="buttonImg2">
+              <conditional-effect service="classService" ifReturn="10">
+                <vibration-effect intensity="50.0" startTime="1" endTime="5" fade="0.5"></vibration-effect>
+                <temperature-effect intensity="80.0" startTime="2" endTime="4"></temperature-effect>
+              </conditional-effect>
 							<wind-effect intensity="60.0" startTime="1" endTime="infinite"></wind-effect>
 						</mulsemedia-box>
 					</div>

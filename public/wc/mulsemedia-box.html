@@ -249,39 +249,56 @@
 
               // ToDo: Gerar fluxo de acordo com o serviço. Problema: 2 responses
 
-              //console.log(mulsemediaBox.conditional_effects);
-
+              // console.log(mulsemediaBox.conditional_effects[0].getAttribute('service'));
+              var listService = [];
               $.each(mulsemediaBox.conditional_effects, function () {
+                var service = this.getAttribute('service');
+                var conditionEffect = this;
 
-                var socket = io('http://localhost:3000');
-                var currentConditionEffect = this;
+                // Verifica se existe o serviço, para evitar recalculos
+                if (listService.indexOf(service) === -1) {
+                  listService.push(service);
 
-              	// Request questions
-              	socket.on('connect', function(){
-                  console.log("conectado!");
-              		socket.emit('getResult', answer);
-              	});
+                  if (service === 'classService') {
+                    var percentualResult = 0;
+                    var socket = io('http://localhost:3000');
 
-                // Returned of the server
-              	socket.on('results', function(results){
-              			/*
-              				"results" is an array with replies (true or false) returned from the server
-              			*/
-              			var percentualResult = 0;
-              			for (var i = 0; i < results.length; i++) {
-              				if (results[i]) {
-              					percentualResult += (100 / results.length);
-              				}
-              			}
-              			socket.emit('end');
-                    //console.log(currentConditionEffect.ifReturn);
-                    if (percentualResult === parseFloat(currentConditionEffect.ifReturn)){
+                    // Request questions
+                    socket.on('connect', function(){
+                      console.log("conectado!");
+                      socket.emit('getResult', answer);
+                    });
 
-                      mulsemediaBox.startTimerListener($(currentConditionEffect).children());
-                    }
+                    // Returned of the server
+                    socket.on('results', function(results){
+                        /*
+                          "results" is an array with replies (true or false) returned from the server
+                        */
 
-                });
+                        for (var i = 0; i < results.length; i++) {
+                          if (results[i]) {
+                            percentualResult += (100 / results.length);
+                          }
+                        }
+                        socket.emit('end');
+                        if (percentualResult === parseFloat(conditionEffect.ifReturn)) {
+                          mulsemediaBox.startTimerListener($(conditionEffect).children());
+                        }
+                        // $.each(mulsemediaBox.conditional_effects, function () {
+                        //
+                        //   var currentConditionEffect = this;
+                        //     if (percentualResult === parseFloat(currentConditionEffect.ifReturn)) {
+                        //       mulsemediaBox.startTimerListener($(currentConditionEffect).children());
+                        //     }
+                        // });
+                    });
+                  }
+
+                }
+
               });
+
+
 
 
             };
