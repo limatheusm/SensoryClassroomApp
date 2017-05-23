@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="import" href="wc/mulsemedia-box.html">
+    <script src="js/socket.io.min.js"></script>
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <title>Sensory Classroom</title>
@@ -33,7 +34,20 @@
 					<ul class="list-group"><!-- Details Questions Fill dynamically --></ul>
 
 					<!-- Box associada ao parent div -->
-          
+          <mulsemedia-box idbind="box-here">
+
+            <conditional-effect service="classService" ifReturn="100">
+              <light-effect intensity='50.0' startTime='0' endTime='2'></light-effect>
+        			<vibration-effect intensity='35.0' startTime='0' endTime='2'></vibration-effect>
+        			<light-effect intensity='50.0' startTime='4' endTime='6'></light-effect>
+        			<vibration-effect intensity='35.0' startTime='4' endTime='6'></vibration-effect>
+        			<light-effect  intensity='50.0' startTime='8' endTime='10'></light-effect>
+        			<vibration-effect intensity='35.0' startTime='8' endTime='10'></vibration-effect>
+        			<light-effect intensity='50.0' startTime='12' endTime='14'></light-effect>
+        			<vibration-effect intensity='35.0' startTime='12' endTime='14'></vibration-effect>
+            </conditional-effect>
+
+          </mulsemedia-box>
 
 					<h1 id="performance"></h1>
 				</div>
@@ -42,7 +56,8 @@
 			<!-- Buttons -->
 			<div class="row">
 			    <div class="col-xs-6 col-xs-offset-3">
-			        <button type="button" class="btn btn-custom btn-block" onclick="location.href='index.html'">home</button>
+			        <!-- <button type="button" class="btn btn-custom btn-block" onclick="location.href='index.html'">home</button> -->
+              <button type="button" id="btnResult" class="btn btn-custom btn-block">result</button>
 			    </div>
 			</div>
 		</div>
@@ -59,91 +74,4 @@
         </div>
     </footer>
 </body>
-<script>
-$(function () {
-
-	var result = parseFloat(localStorage.getItem("result"));
-
-	if (result)
-		document.getElementById("result").innerHTML = result+'%';
-	else
-		document.getElementById("result").innerHTML = 'Try it!';
-
-	var performance = document.getElementById("performance");
-    var effectsHTML = "";
-    var effects;
-    var box = $('#box-here');
-
-	if (result === 100){
-		/*music*/
-		/*start and pause after 15 seconds*/
-        $(box).append("<audio id=\"audio\" src=\"audio/champion.mp3\" autoplay></audio>");
-		setTimeout( function() {
-		        document.getElementById('audio').pause();
-		        document.getElementById('audio').currentTime = 0;
-		    }, 15000 );
-		/*effect*/
-		effectsHTML =
-			"<mulsemedia-box>\n"+
-			"	<light-effect intensity='50.0' startTime='0' endTime='2'></light-effect>\n"+
-			"	<vibration-effect intensity='35.0' startTime='0' endTime='2'></vibration-effect>\n"+
-			"	<light-effect intensity='50.0' startTime='4' endTime='6'></light-effect>\n"+
-			"	<vibration-effect intensity='35.0' startTime='4' endTime='6'></vibration-effect>\n"+
-			"	<light-effect  intensity='50.0' startTime='8' endTime='10'></light-effect>\n"+
-			"	<vibration-effect intensity='35.0' startTime='8' endTime='10'></vibration-effect>\n"+
-			"	<light-effect intensity='50.0' startTime='12' endTime='14'></light-effect>\n"+
-			"	<vibration-effect intensity='35.0' startTime='12' endTime='14'></vibration-effect>\n"+
-			"</mulsemedia-box>";
-
-        $(box).append(effectsHTML);
-
-		effects = $('mulsemedia-box').children();
-
-		effects.each(function () {
-			/* Parametro: lista de tags efeitos com parent mulsemedia-box */
-			runEffect(this);
-		});
-
-		performance.innerHTML = 'Congratulations! :D';
-	}
-	else if (result >= 70)
-		performance.innerHTML = 'Nice! :)';
-	else if (result < 70){
-        $(box).append("<audio id=\"audio\" src=\"audio/raul.wav\" autoplay></audio>");
-
-		effectsHTML =
-			"<mulsemedia-box>\n"+
-			"	<vibration-effect intensity='80.0' startTime='0' endTime='5'></vibration-effect>\n"+
-			"	<fog-effect intensity='50.0' startTime='0' endTime='5'></fog-effect>\n"+
-			"</mulsemedia-box>";
-
-		$(box).append(effectsHTML);
-
-		effects = $('mulsemedia-box').children();
-
-		effects.each(function () {
-			/* Parametro: tag effect com parent mulsemedia-box */
-			runEffect(this);
-		});
-
-		performance.innerHTML = 'You Fail :(';
-	}
-
-	/*details of the questions*/
-	var listQuestions = localStorage.getItem("questions");
-	var list = JSON.parse(listQuestions);
-	//console.log(list);
-	for (var i = 0; i < list.length; i++) {
-		var title = list[i].title;
-		var isCorrect = list[i].answer;
-		if(isCorrect){
-			$("ul").append("<li class='list-group-item list-group-item-success'>"+title+" <br> <strong>Correct answer!</strong></li>");
-		}
-		else {
-			$("ul").append("<li class='list-group-item list-group-item-danger'>"+title+" <br> <strong>Wrong Answer!</strong> </li>");
-		}
-	}
-});
-
-</script>
 </html>

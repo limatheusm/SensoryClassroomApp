@@ -34,10 +34,7 @@
 						<!-- Effects -->
 						<!-- Box associada ao parent div -->
 
-
-
-
-						<mulsemedia-box idbind="img1" onStart="buttonImg1">
+						<mulsemedia-box idbind="img1" onClickStart="buttonImg1">
               <conditional-effect service="classService" ifReturn="100">
                 <vibration-effect intensity="50.0" startTime="1" endTime="5" fade="0.5"></vibration-effect>
               </conditional-effect>
@@ -55,7 +52,7 @@
 						<!-- img is optional -->
 						<p class="text-center">“Wind Power Energy is the type of energy that uses the wind produced by the movement of planet earth and the atmospheric phenomena”</p>
 						<!-- Effects -->
-						<mulsemedia-box idBind="img2" onStart="buttonImg2">
+						<mulsemedia-box idBind="img2" onClickStart="buttonImg2">
 							<wind-effect intensity="60.0" startTime="1" endTime="infinite"></wind-effect>
 						</mulsemedia-box>
 					</div>
@@ -67,7 +64,7 @@
 						<!-- img is optional -->
 						<p class="text-center">“Solar Energy is the type of energy that comes from the rising of the sun in the form of heat and light”</p>
 						<!-- Effects -->
-						<mulsemedia-box idBind="img3" onStart="buttonImg3">
+						<mulsemedia-box idBind="img3" onClickStart="buttonImg3">
 							<light-effect intensity="50.0" startTime="1" endTime="5" fade="0.5"></light-effect>
 							<temperature-effect intensity="80.0" startTime="2" endTime="4"></temperature-effect>
 						</mulsemedia-box>
@@ -98,7 +95,7 @@
     </footer>
 </body>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.4/socket.io.min.js"></script>
+<script src="js/socket.io.min.js"></script>
 <script src="js/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/review.js"></script>
