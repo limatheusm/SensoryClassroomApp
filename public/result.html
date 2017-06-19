@@ -16,11 +16,14 @@
 	<header>
 		<div class="row">
 			<div class="col-xs-12">
-				<h1>Your result is</h1>
-
-				<h3 id="result"></h3>
+				<h1>You selected</h1>
+        <!--
+          Input que recebera da page quiz.html o que o usuario selecionou.
+          Seu "id" sera passado como parametro de entrada para o conditional-effect que
+          fara a avalicao do resultado.
+        -->
+        <h1><input type="text" id="input-mbox" disabled></h1>
 				<hr>
-				<h1>Details:</h1>
 			</div>
 		</div>
 	</header><!-- /header -->
@@ -31,12 +34,13 @@
 			<div class="row">
 				<div id="box-here" class="col-xs-12">
 
-					<ul class="list-group"><!-- Details Questions Fill dynamically --></ul>
+					<!-- <ul class="list-group"></ul> -->
 
-					<!-- Box associada ao parent div -->
-          <mulsemedia-box idbind="box-here">
+          <button type="button" class="btn btn-custom btn-block" id="startMulsemediaBox">Check result</button>
 
-            <conditional-effect service="classService" ifReturn="100">
+          <mulsemedia-box idbind="box-here" onClickStart="startMulsemediaBox">
+
+            <conditional-effect service="classService" in="input-mbox" ifReturn="100" op="=">
               <light-effect intensity='50.0' startTime='0' endTime='2'></light-effect>
         			<vibration-effect intensity='35.0' startTime='0' endTime='2'></vibration-effect>
         			<light-effect intensity='50.0' startTime='4' endTime='6'></light-effect>
@@ -44,6 +48,17 @@
         			<light-effect  intensity='50.0' startTime='8' endTime='10'></light-effect>
         			<vibration-effect intensity='35.0' startTime='8' endTime='10'></vibration-effect>
         			<light-effect intensity='50.0' startTime='12' endTime='14'></light-effect>
+        			<vibration-effect intensity='35.0' startTime='12' endTime='14'></vibration-effect>
+            </conditional-effect>
+
+            <conditional-effect service="classService" in="input-mbox" ifReturn="70" op="<">
+              <fog-effect intensity='50.0' startTime='0' endTime='2'></fog-effect>
+        			<vibration-effect intensity='35.0' startTime='0' endTime='2'></vibration-effect>
+        			<fog-effect intensity='50.0' startTime='4' endTime='6'></fog-effect>
+        			<vibration-effect intensity='35.0' startTime='4' endTime='6'></vibration-effect>
+        			<fog-effect  intensity='50.0' startTime='8' endTime='10'></fog-effect>
+        			<vibration-effect intensity='35.0' startTime='8' endTime='10'></vibration-effect>
+        			<fog-effect intensity='50.0' startTime='12' endTime='14'></fog-effect>
         			<vibration-effect intensity='35.0' startTime='12' endTime='14'></vibration-effect>
             </conditional-effect>
 
@@ -56,8 +71,7 @@
 			<!-- Buttons -->
 			<div class="row">
 			    <div class="col-xs-6 col-xs-offset-3">
-			        <!-- <button type="button" class="btn btn-custom btn-block" onclick="location.href='index.html'">home</button> -->
-              <button type="button" id="btnResult" class="btn btn-custom btn-block">result</button>
+			        <button type="button" class="btn btn-custom btn-block" onclick="location.href='index.html'">home</button>
 			    </div>
 			</div>
 		</div>
@@ -73,5 +87,15 @@
             </div>
         </div>
     </footer>
+
+  <script type="text/javascript">
+    $(function () {
+      var input = $('#input-mbox');
+      var answer = localStorage.getItem('answer');
+      $(input).val(answer);
+
+    });
+  </script>
+
 </body>
 </html>

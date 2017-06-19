@@ -61,6 +61,10 @@ function getQuestions(list) {
 // Funcao para computar o resultado do Quiz
 function computeResultQuiz(listQuestions, answer) {
 
+  if (!Array.isArray(answer)) {
+    answer = answer.split(",");
+  }
+
   if (listQuestions.length !== answer.length) {
     console.log('ERRO, length is not equals');
   }

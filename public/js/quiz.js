@@ -55,8 +55,10 @@ $(function() {
 			    if (currentQuestion < listOfQuestions.length){
 						modelHTML(listOfQuestions[currentQuestion]);
 					}
-			    else { //Finalizou Quiz, solicita resultado ao servidor
-						socket.emit('getResult', answer);
+			    else { //Finalizou Quiz
+						console.log(answer);
+						localStorage.setItem("answer", answer);
+						location.href='result.html';
 			    }
 
 			    uploadProgressBar += (100 / listOfQuestions.length);
@@ -64,24 +66,6 @@ $(function() {
 			});
   });
 
-	// Returned of the server
-	socket.on('results', function(results){
-			/*
-				"results" is an array with replies (true or false) returned from the server
-			*/
-			var percentualResult = 0;
-			for (var i = 0; i < results.length; i++) {
-				if (results[i]) {
-					listOfQuestions[i].answer = results[i];
-					percentualResult += (100 / results.length);
-				}
-			}
-			socket.emit('end');
-			//Send data to another html page
-			localStorage.setItem("result", percentualResult);
-			localStorage.setItem("questions", JSON.stringify(listOfQuestions));
-			location.href='result.html';
-  });
 
 //////////////// Help Functions //////////////////////////////
 

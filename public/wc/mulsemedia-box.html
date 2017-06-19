@@ -232,6 +232,7 @@
               this.service = this.getAttribute('service');
               this.ifReturn = this.getAttribute('ifReturn');
               this.in = this.getAttribute('in');
+              this.op = this.getAttribute('op');
 
             };
 
@@ -257,61 +258,13 @@
                 if (conditional_effects) this.conditional_effects = conditional_effects;
             };
 
-            MulsemediaBox.prototype.syncTime = function (video, effect){
-                //get spans from shadowRoot
-                var thisShadowRoot = effect.parentNode.shadowRoot;
-                var textIntensity = thisShadowRoot.getElementById('intensity-'+effect.type);
-                var currentTime = video.currentTime;
-                var duration = (effect.endTime - video.currentTime) * 1000;
-                var withinBounds = (currentTime >= effect.startTime) && (currentTime < effect.endTime);
-
-                if (!isNaN(effect.fade) && effect.executing){
-
-                    effect.fadeIntensity += effect.fade;
-                    textIntensity.innerHTML = (effect.type === 'scent')
-                                            ? effect.type_scent + " with " + (effect.fadeIntensity.toFixed(2)) + " intensity"
-                                            : (effect.fadeIntensity.toFixed(2));
-                }
-
-                if (!video.paused){
-                    if (withinBounds && !effect.executing){
-
-                        if (effect.type === 'vibration') vibrate(duration);
-
-                        textIntensity.innerHTML = (effect.type === 'scent')
-                                                ? effect.type_scent + " with " + effect.intensity + " intensity"
-                                                : effect.intensity;
-
-                        effect.executing = true;
-                    }
-
-                    if(currentTime >= effect.endTime && effect.executing){
-                        //console.log("effect "+effect.type+" with "+effect.intensity+" intensity finished");
-                        effect.executing = false;
-                        textIntensity.innerHTML = '-';
-                        effect.fadeIntensity = effect.intensity; //zera fading
-                        if (effect.type === 'vibration') vibrate(0);
-                    }
-
-                    if(currentTime <= effect.startTime && effect.executing){
-                        //console.log("effect "+effect.type+" with "+effect.intensity+" intensity stoped");
-                        effect.executing = false;
-                        textIntensity.innerHTML = '-';
-                        effect.fadeIntensity = effect.intensity; //zera fading
-                        if (effect.type === 'vibration') vibrate(0);
-                    }
-                }
-                else if(video.paused && effect.executing){
-                    //console.log("effect "+effect.type+" with "+effect.intensity+" intensity paused");
-                    effect.executing = false;
-                    textIntensity.innerHTML = '-';
-                    if (effect.type === 'vibration') vibrate(0);
-                }
-            };
-
             /*
+            startTimerListener():
               Funcao que verifica qual tipo de midia e seus atributos
-              e Starta o time adequado
+              e Starta o time adequado. Ela pode chamar:
+                syncTime() -> Caso a midia seja video/audio, para
+                                        sincronizar com a timeline
+                runEffect() -> Caso a midia seja imagem/texto/...
             */
             MulsemediaBox.prototype.startTimerListener = function(list) {
                 var length = this.list_effects.length;
@@ -381,6 +334,58 @@
                   }
             };
 
+            MulsemediaBox.prototype.syncTime = function (video, effect){
+                //get spans from shadowRoot
+                var thisShadowRoot = effect.parentNode.shadowRoot;
+                var textIntensity = thisShadowRoot.getElementById('intensity-'+effect.type);
+                var currentTime = video.currentTime;
+                var duration = (effect.endTime - video.currentTime) * 1000;
+                var withinBounds = (currentTime >= effect.startTime) && (currentTime < effect.endTime);
+
+                if (!isNaN(effect.fade) && effect.executing){
+
+                    effect.fadeIntensity += effect.fade;
+                    textIntensity.innerHTML = (effect.type === 'scent')
+                                            ? effect.type_scent + " with " + (effect.fadeIntensity.toFixed(2)) + " intensity"
+                                            : (effect.fadeIntensity.toFixed(2));
+                }
+
+                if (!video.paused){
+                    if (withinBounds && !effect.executing){
+
+                        if (effect.type === 'vibration') vibrate(duration);
+
+                        textIntensity.innerHTML = (effect.type === 'scent')
+                                                ? effect.type_scent + " with " + effect.intensity + " intensity"
+                                                : effect.intensity;
+
+                        effect.executing = true;
+                    }
+
+                    if(currentTime >= effect.endTime && effect.executing){
+                        //console.log("effect "+effect.type+" with "+effect.intensity+" intensity finished");
+                        effect.executing = false;
+                        textIntensity.innerHTML = '-';
+                        effect.fadeIntensity = effect.intensity; //zera fading
+                        if (effect.type === 'vibration') vibrate(0);
+                    }
+
+                    if(currentTime <= effect.startTime && effect.executing){
+                        //console.log("effect "+effect.type+" with "+effect.intensity+" intensity stoped");
+                        effect.executing = false;
+                        textIntensity.innerHTML = '-';
+                        effect.fadeIntensity = effect.intensity; //zera fading
+                        if (effect.type === 'vibration') vibrate(0);
+                    }
+                }
+                else if(video.paused && effect.executing){
+                    //console.log("effect "+effect.type+" with "+effect.intensity+" intensity paused");
+                    effect.executing = false;
+                    textIntensity.innerHTML = '-';
+                    if (effect.type === 'vibration') vibrate(0);
+                }
+            };
+
             MulsemediaBox.prototype.runEffect = function (effect) {
                 //var duration = effect.duration * 1000;
                 var duration = (effect.endTime - effect.startTime) * 1000;
@@ -425,85 +430,108 @@
             }
 
             MulsemediaBox.prototype.verifyConditionalEffect = function () {
+               var mulsemediaBox = this;
+               var listService = [];
+               var conditionalClass = [];
+               var conditionalDeal = [];
+               /* Preeche apenas com as condicoes dos servicos especificos */
+               $.each(mulsemediaBox.conditional_effects, function () {
+                 if (this.service === 'classService') {
+                   conditionalClass.push(this);
+                 }
+                 else if (this.service === 'dealService') {
+                   conditionalDeal.push(this)
+                 }
+               });
 
-             var answer = ['1','4','4','4','3'];
-             var mulsemediaBox = this;
-             var listService = [];
-             var conditionalClass = $('conditional-effect[service="classService"]');
-             var conditionalDeal = $('conditional-effect[service="dealService"]');
+               //start consulta ao servico com o botao
+               if (this.element.onClickStart) {
+                 $('#'+this.element.onClickStart).click(function () {
+                     if (conditionalClass.length) {
+                       var socket = io.connect('http://localhost:3000');
+                       $.each(conditionalClass, function () {
+                         connectClassService(socket, 'getResult', $('#'+this.in).val(), this);
+                       });
+                     }
 
-             //start com o botao
-             if (this.element.onClickStart) {
-               $('#'+this.element.onClickStart).click(function () {
-                 //$.each(conditionalClass, function () {
-                   var socket = io('http://localhost:3000');
-                   connectClassService(socket, 'getResult', answer, conditionalClass);
-                 //});
-
-                 $.each(conditionalDeal, function () {
-                   var socket = io('http://localhost:3030');
-                   connectDealService(socket, 'validateCard', $('#'+this.in).val(), this);
+                     if (conditionalDeal.length) {
+                      var socket = io.connect('http://localhost:3030');
+                      $.each(conditionalDeal, function () {
+                        connectDealService(socket, 'validateCard', $('#'+this.in).val(), this);
+                      });
+                     }
                  });
-               });
-             }
-             else {
-               //$.each(conditionalClass, function () {
-                 var socket = io('http://localhost:3000');
-                 connectClassService(socket, 'getResult', answer, conditionalClass);
-               //});
-               $.each(conditionalDeal, function () {
-                 var socket = io('http://localhost:3030');
-                 connectDealService(socket, 'validateCard', $('#'+this.in).val(), this);
-               });
-             }
-
-             //  Quando receber uma resposta do servidor, captura o evento
-             $(conditionalClass).on("responseClassService", function (event, response) {
-               if (parseFloat(this.ifReturn) === response) {
-                 console.log('Accepted condition!');
-                 if (mulsemediaBox.element.onClickStart) {
-                   $(this).children().each(function () {
-                     mulsemediaBox.runEffect(this);
+               }
+               else { // start consulta ao servico ao renderizar
+                 console.log('a');
+                 if (conditionalClass.length) {
+                   var socket = io.connect('http://localhost:3000');
+                   $.each(conditionalClass, function () {
+                     connectClassService(socket, 'getResult', $('#'+this.in).val(), this);
                    });
                  }
-                 else {
-                  mulsemediaBox.startTimerListener($(this).children());
-                 }
-               }
-               else {
-                 console.log('Rejected condition!');
-               }
-             });
 
-             $(conditionalDeal).on("responseDealService", function (event, response) {
-               if (parseFloat(this.ifReturn) === response) {
-                 console.log('Accepted condition!');
-                 if (mulsemediaBox.element.onClickStart){ //evitar dois cliques
-                   $(this).children().each(function () {
-                     mulsemediaBox.runEffect(this);
-                   });
+                 if (conditionalDeal.length) {
+                  var socket = io.connect('http://localhost:3030');
+                  $.each(conditionalDeal, function () {
+                    connectDealService(socket, 'validateCard', $('#'+this.in).val(), this);
+                  });
+                 }
+               }
+
+               //  Quando receber uma resposta do servidor, captura o evento
+               $(conditionalClass).on("responseClassService", function (event, response) {
+                 console.log(response);
+                 if (computeCondition(response, parseFloat(this.ifReturn), this.op)) {
+                   console.log('Accepted condition!');
+                   if (mulsemediaBox.element.onClickStart) {
+                     $(this).children().each(function () {
+                       mulsemediaBox.runEffect(this);
+                     });
+                   }
+                   else {
+                    mulsemediaBox.startTimerListener($(this).children());
+                   }
                  }
                  else {
-                   mulsemediaBox.startTimerListener($(this).children());
+                   console.log('Rejected condition!');
                  }
-               }
-               else {
-                 console.log('Rejected condition!');
-               }
-             });
+               });
 
+               $(conditionalDeal).on("responseDealService", function (event, response) {
+                 //console.log(this);
+                 if (computeCondition(response, parseFloat(this.ifReturn), this.op)) {
+                   console.log('Accepted condition!');
+                   if (mulsemediaBox.element.onClickStart) { //evitar dois cliques
+                     $(this).children().each(function () {
+                       mulsemediaBox.runEffect(this);
+                     });
+                   }
+                   else {
+                     mulsemediaBox.startTimerListener($(this).children());
+                   }
+                 }
+                 else {
+                   console.log('Rejected condition!');
+                 }
+               });
            }; //verifyConditionalEffect
 
-           /* Start */
-            for (var i = 0; i < listMulsemediaBox.length; i++){
-              var aux = new MulsemediaBox(listMulsemediaBox[i],
-                                    $(listMulsemediaBox[i]).children().not('conditional-effect'),
-                                    $(listMulsemediaBox[i]).children('conditional-effect'));
 
-              aux.startTimerListener(aux.list_effects);
 
-              if (aux.conditional_effects.length) {
-                aux.verifyConditionalEffect();
+           /******* Start MulsemediaBox *******/
+            startMulsemediaBox();
+            function startMulsemediaBox() {
+              for (var i = 0; i < listMulsemediaBox.length; i++){
+                var aux = new MulsemediaBox(listMulsemediaBox[i],
+                                      $(listMulsemediaBox[i]).children().not('conditional-effect'),
+                                      $(listMulsemediaBox[i]).children('conditional-effect'));
+
+                aux.startTimerListener(aux.list_effects);
+
+                if (aux.conditional_effects.length) {
+                  aux.verifyConditionalEffect();
+                }
               }
             }
 
@@ -513,25 +541,26 @@
               // Request questions
             	socket.on('connect', function(){
                 console.log("conectado!");
-            		socket.emit(message, parameters);
+                socket.emit(message, parameters);
             	});
-
               // Returned of the server
+
               socket.on('results', function(results){
+                  socket.disconnect();
+                  console.log("desconectado!");
                   var percentualResult = 0;
                   for (var i = 0; i < results.length; i++) {
                     if (results[i]) {
                       percentualResult += (100 / results.length);
                     }
                   }
-                  socket.emit('end');
                   // Quando receber resposta do servidor, dispara um evento
                   $(element).trigger("responseClassService", [percentualResult]);
 
               });
             }
 
-            function connectDealService(socket, message, parameters, element) {
+            function connectDealService(socket, message, parameters, element, response) {
               // Request questions
             	socket.on('connect', function(){
                 console.log("conectado!");
@@ -540,7 +569,7 @@
 
               // Returned of the server
               socket.on('resultValidation', function(results){
-                  socket.emit('end');
+                  socket.disconnect();
                   // Quando receber resposta do servidor, dispara um evento
                   $(element).trigger("responseDealService", [results]);
               });
@@ -549,6 +578,25 @@
             function vibrate(duration) {
                 if(!(window.navigator.vibrate(duration)))
                     console.log('Not supported by browser');
+            }
+
+            function computeCondition(nServe, nCondition, op) {
+              switch (op) {
+                case '=':
+                  return (nServe === nCondition);
+                case '>':
+                  return (nServe > nCondition);
+                case '<':
+                  return (nServe < nCondition);
+                case '>=':
+                  return (nServe >= nCondition);
+                case '<=':
+                  return (nServe <= nCondition);
+                case '!=':
+                  return (nServe !== nCondition);
+                default:
+                  return null;
+              }
             }
 
 
