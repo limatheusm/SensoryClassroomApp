@@ -12,8 +12,9 @@ Na pasta raiz, inicialize o localhost para rodar a aplicação:
 node web-server.js
 ```
 
-Na pasta public/server, inicilize o serviço web:
+Na pasta public/server, Instale os módulos necessários e inicilize o serviço web:
 
 ```
+npm install
 node class-service.js
 ```
