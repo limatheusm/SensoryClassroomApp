@@ -2,7 +2,8 @@
 
 Aplicativo Multisensorial voltado para a Educação.
 
-* É preciso possuir o NodeJs instalado.
+* É preciso possuir o NodeJs (v7.9.0) instalado.
+* Para melhor experiência com os webcomponents, utilize o navegador chrome.
 
 Para executar o aplicativo rode os seguintes comandos:
 
