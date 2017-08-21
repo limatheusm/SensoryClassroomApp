@@ -1,0 +1,24 @@
+{
+  "name": "SensoryClassroomApp",
+  "version": "1.0.0",
+  "description": "Aplicativo Multisensorial voltado para a Educação.",
+  "main": "web-server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matheus-lima/SensoryClassroomApp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/matheus-lima/SensoryClassroomApp/issues"
+  },
+  "homepage": "https://github.com/matheus-lima/SensoryClassroomApp#readme",
+  "dependencies": {
+    "express": "^4.15.4",
+    "socket.io": "^2.0.3"
+  }
+}
