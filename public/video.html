@@ -7,6 +7,7 @@
 	<link rel="stylesheet" href="css/style.css">
 	<!-- WC MULSEMEDIa -->
 	<link rel="import" href="wc/mulsemedia-box.html">
+	<script src="js/socket.io.min.js"></script>
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<title>Sensory Classroom</title>
@@ -31,7 +32,16 @@
 						funciona como um mapeamento do video para com sua box de efeito
 						for example -> id = "box-idvideo"
 					-->
+					<h1><input type="text" id="input-mbox" disabled></h1>
+					<script>
+						//var arr = ['1','4','4','4','3']
+						var arr = 111111111111
+						$('#input-mbox').val(arr)
+					</script>
 					<mulsemedia-box idBind="video1">
+						<conditional-effect service="dealService" in="input-mbox" ifReturn="1" op="=">
+								<scent-effect intensity="20" startTime="2" endTime="7" type_scent="popcorn"></scent-effect>
+						</conditional-effect>
 						<temperature-effect intensity="20" startTime="9" fade="0.5" endTime="18"></temperature-effect>
 						<scent-effect intensity="50.0" startTime="12" endTime="18" type_scent="combustion"></scent-effect>
 						
@@ -44,7 +54,7 @@
 						<water-spray intensity="60" startTime="46" endTime="50"></water-spray>
 						<water-spray intensity="40" startTime="50" endTime="53"></water-spray>
 						
-						<light-effect intensity="80" startTime="109" endTime="112"></light-effect>
+						<light-effect intensity="80" startTime="54" endTime="112"></light-effect>
 						<light-effect intensity="10" fade="1" startTime="113" endTime="115"></light-effect>
 						<light-effect intensity="80" fade="1" startTime="115" endTime="119"></light-effect>
 						<temperature-effect intensity="40.0" startTime="120" endTime="123"></temperature-effect>
