@@ -2,438 +2,489 @@
   <!-- Style -->
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <style>
-  .effect-box {
+    .effect-box {
       padding: 2px;
       margin-top: 12px;
       color: rgba(102, 102, 102, 0.5);
       border: 1px solid rgba(102, 102, 102, 0.5);
-      background-color:rgba(0, 0, 0, 0);
-  }
-  .intensity {
+      background-color: rgba(0, 0, 0, 0);
+    }
+
+    .intensity {
       font-family: "Times New Roman", Times, serif;
       font-size: 20px;
       color: #ff4411;
-  }
+    }
   </style>
   <!-- Box Effects -->
   <!-- <div class="container"> -->
-      <div class="row">
-          <div class="col-xs-12">
-              <div class="col-xs-2 effect-box text-center">
-                  Wind Effect<br> <span id="intensity-wind" class="intensity">-</span>
-              </div>
-
-              <div class="col-xs-2 effect-box text-center">
-                  Vibrate Effect<br> <span id="intensity-vibration" class="intensity">-</span>
-              </div>
-
-              <div class="col-xs-2 effect-box text-center">
-                  Light Effect<br> <span id="intensity-light" class="intensity">-</span>
-              </div>
-
-              <div class="col-xs-2 effect-box text-center">
-                  Fog Effect<br> <span id="intensity-fog" class="intensity">-</span>
-              </div>
-
-              <div class="col-xs-2 effect-box text-center">
-                  Temp Effect<br> <span id="intensity-temperature" class="intensity">-</span>
-              </div>
-              <div class="col-xs-2 effect-box text-center">
-                  Water Spray <br> <span id="intensity-water-spray" class="intensity">-</span>
-              </div>
-              <div class="col-xs-12 effect-box text-center">
-                  Scent <br> <span id="intensity-scent" class="intensity">-</span>
-              </div>
-          </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="col-xs-2 effect-box text-center">
+        Wind Effect
+        <br>
+        <span id="intensity-wind" class="intensity">-</span>
       </div>
+
+      <div class="col-xs-2 effect-box text-center">
+        Vibrate Effect
+        <br>
+        <span id="intensity-vibration" class="intensity">-</span>
+      </div>
+
+      <div class="col-xs-2 effect-box text-center">
+        Light Effect
+        <br>
+        <span id="intensity-light" class="intensity">-</span>
+      </div>
+
+      <div class="col-xs-2 effect-box text-center">
+        Fog Effect
+        <br>
+        <span id="intensity-fog" class="intensity">-</span>
+      </div>
+
+      <div class="col-xs-2 effect-box text-center">
+        Temp Effect
+        <br>
+        <span id="intensity-temperature" class="intensity">-</span>
+      </div>
+      <div class="col-xs-2 effect-box text-center">
+        Water Spray
+        <br>
+        <span id="intensity-water-spray" class="intensity">-</span>
+      </div>
+      <div class="col-xs-12 effect-box text-center">
+        Scent
+        <br>
+        <span id="intensity-scent" class="intensity">-</span>
+      </div>
+    </div>
+  </div>
   <!-- </div>   -->
 
 </template>
 
 <script>
   var thisDocument = document.currentScript.ownerDocument
-  document.addEventListener("DOMContentLoaded", function(event) {
-  (function() {
-    //var thisDocument = document.currentScript.ownerDocument
-    //Get the contents of the template (Polyfill use _currentScript)
-    var template = thisDocument.querySelector('template')
+  document.addEventListener("DOMContentLoaded", function (event) {
+    (function () {
+      //var thisDocument = document.currentScript.ownerDocument
+      //Get the contents of the template (Polyfill use _currentScript)
+      var template = thisDocument.querySelector('template')
 
-    //Create a prototype for this component
-    var vibrationEffect = Object.create(HTMLElement.prototype)
-    var windEffect = Object.create(HTMLElement.prototype)
-    var lightEffect = Object.create(HTMLElement.prototype)
-    var fogEffect = Object.create(HTMLElement.prototype)
-    var temperatureEffect = Object.create(HTMLElement.prototype)
-    var waterSpray = Object.create(HTMLElement.prototype)
-    var scentEffect = Object.create(HTMLElement.prototype)
-    var conditionalEffect = Object.create(HTMLElement.prototype)
-    var mulsemediaBox = Object.create(HTMLElement.prototype)
+      //Create a prototype for this component
+      var vibrationEffect = Object.create(HTMLElement.prototype)
+      var windEffect = Object.create(HTMLElement.prototype)
+      var lightEffect = Object.create(HTMLElement.prototype)
+      var fogEffect = Object.create(HTMLElement.prototype)
+      var temperatureEffect = Object.create(HTMLElement.prototype)
+      var waterSpray = Object.create(HTMLElement.prototype)
+      var scentEffect = Object.create(HTMLElement.prototype)
+      var conditionalEffect = Object.create(HTMLElement.prototype)
+      var mulsemediaBox = Object.create(HTMLElement.prototype)
 
-    /*BOX EFFECTS*/
-    mulsemediaBox.createdCallback = function () {
+      /*BOX EFFECTS*/
+      mulsemediaBox.createdCallback = function () {
         //Grab the contents of the template
         var clone = document.importNode(template.content, true)
         //Add the template contents to the Shadow DOM
         this.createShadowRoot().appendChild(clone)
         this.idBind = this.getAttribute('idBind')
         this.onClickStart = this.getAttribute('onClickStart')
-    }
-    document.registerElement('mulsemedia-box', {prototype: mulsemediaBox})
+      }
+      document.registerElement('mulsemedia-box', { prototype: mulsemediaBox })
 
-    /* CONDITIONAL EFFECT */
-    // Register a createdCallback
-    conditionalEffect.createdCallback = function () {
-      // Get Tag Attributes
-      this.service = this.getAttribute('service')
-      this.ifReturn = this.getAttribute('ifReturn')
-      this.in = this.getAttribute('in')
-      this.op = this.getAttribute('op')
-    }
-    /*** Register the elements with the document (thatDoc) ***/
-    document.registerElement('conditional-effect', {prototype: conditionalEffect})
+      /* CONDITIONAL EFFECT */
+      // Register a createdCallback
+      conditionalEffect.createdCallback = function () {
+        // Get Tag Attributes
+        this.service = this.getAttribute('service')
+        this.ifReturn = this.getAttribute('ifReturn')
+        this.in = this.getAttribute('in')
+        this.op = this.getAttribute('op')
+      }
+      /*** Register the elements with the document (thatDoc) ***/
+      document.registerElement('conditional-effect', { prototype: conditionalEffect })
 
-    /*** EFFECTS ***/
-    /*** VIBRATION EFFECT ***/            
-    buildEffectComponent(vibrationEffect, 'vibration')
-    /*** WIND EFFECT ***/
-    buildEffectComponent(windEffect, 'wind')
-    /*** Light EFFECT ***/
-    buildEffectComponent(lightEffect, 'light')
-    /*** Fog EFFECT ***/
-    buildEffectComponent(fogEffect, 'fog')
-    /*** Temperature EFFECT ***/
-    buildEffectComponent(temperatureEffect, 'temperature')
-    /* WATER SPRAY */
-    buildEffectComponent(waterSpray, 'water-spray')
-    /* SCENT EFFECT */
-    buildEffectComponent(scentEffect, 'scent')
-    
-    /*List of the media*/
-    var listMulsemediaBox = document.querySelectorAll('mulsemedia-box')
+      /*** EFFECTS ***/
+      /*** VIBRATION EFFECT ***/
+      buildEffectComponent(vibrationEffect, 'vibration')
+      /*** WIND EFFECT ***/
+      buildEffectComponent(windEffect, 'wind')
+      /*** Light EFFECT ***/
+      buildEffectComponent(lightEffect, 'light')
+      /*** Fog EFFECT ***/
+      buildEffectComponent(fogEffect, 'fog')
+      /*** Temperature EFFECT ***/
+      buildEffectComponent(temperatureEffect, 'temperature')
+      /* WATER SPRAY */
+      buildEffectComponent(waterSpray, 'water-spray')
+      /* SCENT EFFECT */
+      buildEffectComponent(scentEffect, 'scent')
 
-    /*Object Media representa a midia que contem efeitos MS*/
-    var MulsemediaBox = function (element, list_effects, conditional_effects) {
+      /* Numero de mulsemediaBox presentes na pagina */
+      var listMulsemediaBox = document.querySelectorAll('mulsemedia-box')
+
+      /* Object MulsemediaBox representa a midia que contem efeitos MS */
+      var MulsemediaBox = function (element, list_effects, conditional_effects) {
         if (element) this.element = element
         if (list_effects) this.list_effects = list_effects
         if (conditional_effects) this.conditional_effects = conditional_effects
-    }
-
-    /*
-    startTimerListener():
-      Funcao que verifica qual tipo de midia e seus atributos
-      e Starta o time adequado. Ela pode chamar:
-        runEffectWithTimeLine() -> Caso a midia seja video/audio, para
-                                sincronizar com a timeline
-        runEffectWithoutTimeLine() -> Caso a midia seja imagem/texto/...
-    */
-    MulsemediaBox.prototype.startTimerListener = function(list) {
-      var length = this.list_effects.length
-      var mulsemediaBox = this
-      var element = this.element
-      var idBind = element.getAttribute('idBind')
-      var onClickStart = element.getAttribute('onClickStart')
+      }
 
       /*
-        Opções de atributos:
-        idBind="" onClickStart="" -> starta os efeitos assim que renderizar a pagina
-        idBind="idVideo" -> starta os efeitos de acordo com o tempo do video (USO OBRIGATORIO PARA VIDEOS)
-        idBind="id" onClickStart="idElement" -> starta os efeitos assim que clicar no elemento
-        idBind="id" onClickStart="" -> starta os efeitos assim que renderizar a pagina
+      startTimerListener():
+        Funcao que verifica qual tipo de midia e seus atributos
+        e Starta o time adequado. Ela pode chamar:
+          runEffectWithTimeLine() -> Caso a midia seja video/audio, para
+                                  sincronizar com a timeline
+          runEffectWithoutTimeLine() -> Caso a midia seja imagem/texto/...
       */
-      var elementBind = document.getElementById(idBind)
+      MulsemediaBox.prototype.startTimerListener = function (list) {
+        var length = this.list_effects.length
+        var mulsemediaBox = this
+        var element = this.element
+        var idBind = element.getAttribute('idBind')
+        var onClickStart = element.getAttribute('onClickStart')
 
-      if (elementBind) {
+        /*
+          Opções de atributos:
+          idBind="" onClickStart="" -> starta os efeitos assim que renderizar a pagina
+          idBind="idVideo" -> starta os efeitos de acordo com o tempo do video (USO OBRIGATORIO PARA VIDEOS)
+          idBind="id" onClickStart="idElement" -> starta os efeitos assim que clicar no elemento
+          idBind="id" onClickStart="" -> starta os efeitos assim que renderizar a pagina
+        */
+        var elementBind = document.getElementById(idBind)
 
-        // Video - onTimeUpdate
-        if (elementBind.tagName === 'VIDEO') {
+        if (elementBind) {
+
+          // Video - onTimeUpdate
+          if (elementBind.tagName === 'VIDEO') {
             elementBind.addEventListener("timeupdate", function () {
               for (var i = 0; i < length; i++) {
                 if (list[i])
-                  mulsemediaBox.runEffectWithTimeLine(elementBind, list[i])                
+                  mulsemediaBox.runEffectWithTimeLine(elementBind, list[i])
               }
             }, false)
-        }
-        // especificou evento de click
-        else if (onClickStart) {
-          var type = document.getElementById(onClickStart)
-          if (type) {
-            $(type).click(function () {
-              $.each(list, function () {
-                mulsemediaBox.runEffectWithoutTimeLine(this)
+          }
+          // especificou evento de click
+          else if (onClickStart) {
+            var type = document.getElementById(onClickStart)
+            if (type) {
+              $(type).click(function () {
+                $.each(list, function () {
+                  mulsemediaBox.runEffectWithoutTimeLine(this)
+                })
               })
+            }
+          }
+          else {
+            $.each(list, function () {
+              mulsemediaBox.runEffectWithoutTimeLine(this)
             })
           }
-        }
-        else {
-          $.each(list, function () {
-            mulsemediaBox.runEffectWithoutTimeLine(this)
-          })
-        }
 
-      }
-      // Caso onde nao especificou o idBind
-      else {
-        // especificou evento de click
-        if (onClickStart) {
-          var type = document.getElementById(onClickStart)
-          if (type){
-            $(type).click(function () {
-              $.each(list, function () {
-                mulsemediaBox.runEffectWithoutTimeLine(this)
+        }
+        // Caso onde nao especificou o idBind
+        else {
+          // especificou evento de click
+          if (onClickStart) {
+            var type = document.getElementById(onClickStart)
+            if (type) {
+              $(type).click(function () {
+                $.each(list, function () {
+                  mulsemediaBox.runEffectWithoutTimeLine(this)
+                })
               })
+            }
+          }
+          else {
+            $.each(list, function () {
+              mulsemediaBox.runEffectWithoutTimeLine(this)
             })
           }
-        }
-        else {
-          $.each(list, function () {
-            mulsemediaBox.runEffectWithoutTimeLine(this)
-          })
-        }
 
+        }
       }
-    }
 
-    // Executa os efeitos das mídias com Timeline
-    MulsemediaBox.prototype.runEffectWithTimeLine = function (video, effect) {
-      //get spans from shadowRoot
-      // Para os casos de efeitos oriundos do conditional effect, 
-      // o shadowRoot eh o parent do box e nao do conditional
-      var thisShadowRoot = (effect.parentNode.tagName === 'MULSEMEDIA-BOX') ?
-                                                effect.parentNode.shadowRoot :
-                                                effect.parentNode.parentNode.shadowRoot // first parent is conditional-effect 
-      var textIntensity = thisShadowRoot.getElementById('intensity-'+effect.type) // get interface element 
-      var currentTime = video.currentTime
-      var duration = (effect.endTime - video.currentTime) * 1000
-      var withinBounds = (currentTime >= effect.startTime) && (currentTime < effect.endTime)
+      // Executa os efeitos das mídias com Timeline
+      MulsemediaBox.prototype.runEffectWithTimeLine = function (video, effect) {
+        // get spans from shadowRoot
+        // Para os casos de efeitos oriundos do conditional effect, 
+        // o shadowRoot eh o parent do box e nao do conditional
+        var thisShadowRoot = (effect.parentNode.tagName === 'MULSEMEDIA-BOX') ?
+          effect.parentNode.shadowRoot :
+          effect.parentNode.parentNode.shadowRoot // first parent is conditional-effect 
+        var textIntensity = thisShadowRoot.getElementById('intensity-' + effect.type) // get interface element 
+        var currentTime = video.currentTime
+        var duration = (effect.endTime - video.currentTime) * 1000
+        var withinBounds = (currentTime >= effect.startTime) && (currentTime < effect.endTime)
 
-      /* Avaliar preferencias do usuario */
-      verifyUserPreferences(userPreferences, effect)
+        /* Avaliar preferencias do usuario */
+        verifyMaxFadeIntensity(userPreferences, effect)
 
-      if (!isNaN(effect.fade) && effect.executing){
+        if (!isNaN(effect.fade) && effect.executing) {
           effect.fadeIntensity += effect.fade
           textIntensity.innerHTML = (effect.type === 'scent')
-                                  ? effect.type_scent + " with " + (effect.fadeIntensity.toFixed(2)) + " intensity"
-                                  : (effect.fadeIntensity.toFixed(2))
-      }
+            ? effect.type_scent + " with " + (effect.fadeIntensity.toFixed(2)) + " intensity"
+            : (effect.fadeIntensity.toFixed(2))
+        }
 
-      if (!video.paused){
-          if (withinBounds && !effect.executing){
+        if (!video.paused) {
+          if (withinBounds && !effect.executing) {
 
-              if (effect.type === 'vibration') vibrate(duration)
+            if (effect.type === 'vibration') vibrate(duration)
 
-              textIntensity.innerHTML = (effect.type === 'scent')
-                                      ? effect.type_scent + " with " + effect.intensity + " intensity"
-                                      : effect.intensity
+            textIntensity.innerHTML = (effect.type === 'scent')
+              ? effect.type_scent + " with " + effect.intensity + " intensity"
+              : effect.intensity
 
-              effect.executing = true
+            effect.executing = true
           }
 
-          if(currentTime >= effect.endTime && effect.executing){
-              //console.log("effect "+effect.type+" with "+effect.intensity+" intensity finished")
-              effect.executing = false
-              textIntensity.innerHTML = '-'
-              effect.fadeIntensity = effect.intensity //zera fading
-              if (effect.type === 'vibration') vibrate(0)
+          if (currentTime >= effect.endTime && effect.executing) {
+            //console.log("effect "+effect.type+" with "+effect.intensity+" intensity finished")
+            effect.executing = false
+            textIntensity.innerHTML = '-'
+            effect.fadeIntensity = effect.intensity //zera fading
+            if (effect.type === 'vibration') vibrate(0)
           }
 
-          if(currentTime <= effect.startTime && effect.executing){
-              //console.log("effect "+effect.type+" with "+effect.intensity+" intensity stoped")
-              effect.executing = false
-              textIntensity.innerHTML = '-'
-              effect.fadeIntensity = effect.intensity //zera fading
-              if (effect.type === 'vibration') vibrate(0)
+          if (currentTime <= effect.startTime && effect.executing) {
+            //console.log("effect "+effect.type+" with "+effect.intensity+" intensity stoped")
+            effect.executing = false
+            textIntensity.innerHTML = '-'
+            effect.fadeIntensity = effect.intensity //zera fading
+            if (effect.type === 'vibration') vibrate(0)
           }
-      }
-      else if(video.paused && effect.executing){
+        }
+        else if (video.paused && effect.executing) {
           //console.log("effect "+effect.type+" with "+effect.intensity+" intensity paused")
           effect.executing = false
           textIntensity.innerHTML = '-'
           if (effect.type === 'vibration') vibrate(0)
+        }
       }
-    }
 
-    // Executa os efeitos das mídias sem timeline
-    MulsemediaBox.prototype.runEffectWithoutTimeLine = function (effect) {
-      //var duration = effect.duration * 1000
-      var duration = (effect.endTime - effect.startTime) * 1000
-      var thisShadowRoot = (effect.parentNode.tagName === 'MULSEMEDIA-BOX') ?
-                              effect.parentNode.shadowRoot :
-                              effect.parentNode.parentNode.shadowRoot // first parent is conditional-effect
+      // Executa os efeitos das mídias sem timeline
+      MulsemediaBox.prototype.runEffectWithoutTimeLine = function (effect) {
+        //var duration = effect.duration * 1000
+        var duration = (effect.endTime - effect.startTime) * 1000
+        var thisShadowRoot = (effect.parentNode.tagName === 'MULSEMEDIA-BOX') ?
+          effect.parentNode.shadowRoot :
+          effect.parentNode.parentNode.shadowRoot // first parent is conditional-effect
 
-      var textIntensity = thisShadowRoot.getElementById('intensity-'+effect.type)
-      var timer
-      
-      /* Avaliar preferencias do usuario */
-      verifyUserPreferences(userPreferences, effect)
+        var textIntensity = thisShadowRoot.getElementById('intensity-' + effect.type)
+        var timer
 
-      setTimeout(function () {
-        // StartEffect
-        effect.executing = true
-        //console.log('running '+effect.type)
-        if (effect.type === 'vibration') 
-          vibrate(duration)
+        /* Avaliar preferencias do usuario */
+        verifyMaxFadeIntensity(userPreferences, effect)
 
-        if (!isNaN(effect.fade)){
+        setTimeout(function () {
+          // StartEffect
+          effect.executing = true
+          //console.log('running '+effect.type)
+          if (effect.type === 'vibration')
+            vibrate(duration)
+
+          if (!isNaN(effect.fade)) {
 
             timer = setInterval(function () {
-                effect.fadeIntensity = (effect.fadeIntensity >= userPreferences.maxIntensity) 
-                                          ? effect.fadeIntensity
-                                          : (effect.fadeIntensity + effect.fade)
-                textIntensity.innerHTML = (effect.type === 'scent')
-                                        ? effect.type_scent + " with " + (effect.fadeIntensity.toFixed(2)) + " intensity"
-                                        : (effect.fadeIntensity.toFixed(2))
-            },250)
-        }
-        else {
+              effect.fadeIntensity = (effect.fadeIntensity >= userPreferences.maxIntensity)
+                ? effect.fadeIntensity
+                : (effect.fadeIntensity + effect.fade)
+              textIntensity.innerHTML = (effect.type === 'scent')
+                ? effect.type_scent + " with " + (effect.fadeIntensity.toFixed(2)) + " intensity"
+                : (effect.fadeIntensity.toFixed(2))
+            }, 250)
+          }
+          else {
             textIntensity.innerHTML = (effect.type === 'scent')
-                ? effect.type_scent + " with " + effect.intensity + " intensity"
-                : effect.intensity
-        }
-      },  effect.startTime*1000)
+              ? effect.type_scent + " with " + effect.intensity + " intensity"
+              : effect.intensity
+          }
+        }, effect.startTime * 1000)
 
-      if (!(effect.endTime === 'infinite')){
+        if (!(effect.endTime === 'infinite')) {
           setTimeout(function () {
-              //Finish Effect
-              effect.executing = false
-              effect.fadeIntensity = effect.intensity
-              clearInterval(timer)
-              textIntensity.innerHTML = '-'
-          },  effect.endTime*1000)
+            //Finish Effect
+            effect.executing = false
+            effect.fadeIntensity = effect.intensity
+            clearInterval(timer)
+            textIntensity.innerHTML = '-'
+          }, effect.endTime * 1000)
+        }
       }
-    }
 
-    /*
-    verifyConditionalEffect():
-      Funcao que verifica se a condição foi satisfeita e envia ao 
-      startTimerListener.
-    */
-    MulsemediaBox.prototype.verifyConditionalEffect = function () {
-      var mulsemediaBox = this
-      var listService = []
-      var conditionalClass = []
-      var conditionalDeal = []
-      /* Preeche apenas com as condicoes dos servicos especificos */
-      $.each(mulsemediaBox.conditional_effects, function () {
-        if (this.service === 'classService') {
-          conditionalClass.push(this)
-        }
-        else if (this.service === 'dealService') {
-          conditionalDeal.push(this)
-        }
-      })
+      /*
+      verifyConditionalEffect():
+        Funcao que verifica se a condição foi satisfeita e envia ao 
+        startTimerListener.
+      */
+      MulsemediaBox.prototype.verifyConditionalEffect = function () {
+        var mulsemediaBox = this
+        var listService = []
+        var conditionalClass = []
+        var conditionalDeal = []
+        /* Preeche apenas com as condicoes dos servicos especificos */
+        $.each(mulsemediaBox.conditional_effects, function () {
+          if (this.service === 'classService') {
+            conditionalClass.push(this)
+          }
+          else if (this.service === 'dealService') {
+            conditionalDeal.push(this)
+          }
+        })
 
-      // Starta consulta ao servico com o botao
-      if (this.element.onClickStart) {
-        $('#'+this.element.onClickStart).click(function () {
+        // Starta consulta ao servico com o botao
+        if (this.element.onClickStart) {
+          $('#' + this.element.onClickStart).click(function () {
             if (conditionalClass.length) {
               var socket = io.connect('http://localhost:3000')
               $.each(conditionalClass, function () {
-                connectClassService(socket, 'getResult', $('#'+this.in).val(), this)
+                connectClassService(socket, 'getResult', $('#' + this.in).val(), this)
               })
             }
 
             if (conditionalDeal.length) {
               var socket = io.connect('http://localhost:3030')
               $.each(conditionalDeal, function () {
-                connectDealService(socket, 'validateCard', $('#'+this.in).val(), this)
+                connectDealService(socket, 'validateCard', $('#' + this.in).val(), this)
               })
             }
+          })
+        }
+        // Caso não haja botão, Starta consulta ao servico ao renderizar
+        else {
+          if (conditionalClass.length) {
+            var socket = io.connect('http://localhost:3000')
+            $.each(conditionalClass, function () {
+              connectClassService(socket, 'getResult', $('#' + this.in).val(), this)
+            })
+          }
+
+          if (conditionalDeal.length) {
+            var socket = io.connect('http://localhost:3030')
+            $.each(conditionalDeal, function () {
+              connectDealService(socket, 'validateCard', $('#' + this.in).val(), this)
+            })
+          }
+        }
+
+        //  Quando receber uma resposta do servidor, captura o evento
+        $(conditionalClass).on("responseClassService", function (event, response) {
+          console.log(response)
+          if (computeCondition(response, parseFloat(this.ifReturn), this.op)) {
+            console.log('Accepted condition!')
+            if (mulsemediaBox.element.onClickStart) {
+              $(this).children().each(function () {
+                mulsemediaBox.runEffectWithoutTimeLine(this)
+              })
+            }
+            else {
+              mulsemediaBox.startTimerListener($(this).children())
+            }
+          }
+          else {
+            console.log('Rejected condition!')
+          }
         })
-      }
-      // Caso não haja botão, Starta consulta ao servico ao renderizar
-      else { 
-        if (conditionalClass.length) {
-          var socket = io.connect('http://localhost:3000')
-          $.each(conditionalClass, function () {
-            connectClassService(socket, 'getResult', $('#'+this.in).val(), this)
-          })
-        }
 
-        if (conditionalDeal.length) {
-          var socket = io.connect('http://localhost:3030')
-          $.each(conditionalDeal, function () {
-            connectDealService(socket, 'validateCard', $('#'+this.in).val(), this)
-          })
-        }
-      }
-
-      //  Quando receber uma resposta do servidor, captura o evento
-      $(conditionalClass).on("responseClassService", function (event, response) {
-        console.log(response)
-        if (computeCondition(response, parseFloat(this.ifReturn), this.op)) {
-          console.log('Accepted condition!')
-          if (mulsemediaBox.element.onClickStart) {
-            $(this).children().each(function () {
-              mulsemediaBox.runEffectWithoutTimeLine(this)
-            })
+        $(conditionalDeal).on("responseDealService", function (event, response) {
+          if (computeCondition(response, parseFloat(this.ifReturn), this.op)) {
+            console.log('Accepted condition!')
+            if (mulsemediaBox.element.onClickStart) { //evitar dois cliques
+              $(this).children().each(function () {
+                mulsemediaBox.runEffectWithoutTimeLine(this)
+              })
+            }
+            else {
+              mulsemediaBox.startTimerListener($(this).children())
+            }
           }
           else {
-            mulsemediaBox.startTimerListener($(this).children())
+            console.log('Rejected condition!')
           }
-        }
-        else {
-          console.log('Rejected condition!')
-        }
-      })
+        })
+      } //verifyConditionalEffect
 
-      $(conditionalDeal).on("responseDealService", function (event, response) {
-        //console.log(this)
-        if (computeCondition(response, parseFloat(this.ifReturn), this.op)) {
-          console.log('Accepted condition!')
-          if (mulsemediaBox.element.onClickStart) { //evitar dois cliques
-            $(this).children().each(function () {
-              mulsemediaBox.runEffectWithoutTimeLine(this)
-            })
+      /*** Start MulsemediaBox ***/
+      /* Recupera preferencias do usuario e starta MulsemediaBox */
+      var userPreferences = {}
+      getUserPreferences('../user-preferences/preferences.json',
+        (data) => {
+          console.log(data)
+          userPreferences = data
+          startMulsemediaBox()
+        }, (xhr) => { console.error(xhr); return xhr }
+      );
+
+
+
+      /* HELPER FUNCTIONS */
+
+      /* Funcao que inicia a aplicacao */
+      function startMulsemediaBox() {
+        for (var i = 0; i < listMulsemediaBox.length; i++) {
+
+          // Recupera a lista de efeitos
+          var effectsWithoutConditionalEffect = $(listMulsemediaBox[i]).children().not('conditional-effect')
+          var effectWithConditionalEffect = $(listMulsemediaBox[i]).children('conditional-effect')
+
+          // Avalia o user-preferences e atualiza a lista de efeitos
+          setupEffectsWithPreferences(effectsWithoutConditionalEffect, userPreferences)
+          $.each(effectWithConditionalEffect, function () {
+            setupEffectsWithPreferences($(this).children(), userPreferences)
+          })
+
+          // Atualiza DOM modificado
+          effectsWithoutConditionalEffect = $(listMulsemediaBox[i]).children().not('conditional-effect')
+          effectWithConditionalEffect = $(listMulsemediaBox[i]).children('conditional-effect')
+
+          // Cria objeto Mulsemediabox
+          var aux = new MulsemediaBox(listMulsemediaBox[i],
+            effectsWithoutConditionalEffect,
+            effectWithConditionalEffect)
+
+          aux.startTimerListener(aux.list_effects)
+          if (aux.conditional_effects.length) {
+            // Avalia o user-preferences e atualiza a lista de efeitos
+            setTimeout(() => { aux.verifyConditionalEffect() }, 100)
           }
-          else {
-            mulsemediaBox.startTimerListener($(this).children())
-          }
-        }
-        else {
-          console.log('Rejected condition!')
-        }
-      })
-    } //verifyConditionalEffect
-
-    /* Start MulsemediaBox */
-    // setTimeout(() => {startMulsemediaBox()}, 100)
-    /* Recupera preferencias do usuario e starta MulsemediaBox */
-    var userPreferences = {}
-    getUserPreferences('../user-preferences/preferences.json', 
-      (data) => { 
-        console.log(data)
-        userPreferences = data 
-        startMulsemediaBox()
-      }, (xhr) => { console.error(xhr); return xhr }
-    );
-
-
-
-    /* HELPER FUNCTIONS */
-    function startMulsemediaBox() {
-      for (var i = 0; i < listMulsemediaBox.length; i++){
-        var aux = new MulsemediaBox(listMulsemediaBox[i],
-                              $(listMulsemediaBox[i]).children().not('conditional-effect'),
-                              $(listMulsemediaBox[i]).children('conditional-effect'))
-
-        aux.startTimerListener(aux.list_effects)
-
-        if (aux.conditional_effects.length) {
-          setTimeout(() => {aux.verifyConditionalEffect()}, 100)
         }
       }
-    }
 
-    function buildEffectComponent(component, type) {
-      //Propertys
-      component.type = type
-      component.intensity = 0
-      component.startTime = 0
-      component.endTime = 0
-      component.executing = false
+      /* Funcao que configura um array de efeitos de acordo com o user-preferences */
+      function setupEffectsWithPreferences(effects, userPreferences) {
+        for (var index = 0; index < effects.length; index++) {
+          var effect = effects[index];
 
-      //Register a createdCallback
-      component.createdCallback = function() {
+          // Tratar maxIntensity
+          if (effect.intensity >= userPreferences.maxIntensity)
+            effect.intensity = userPreferences.maxIntensity
+
+          // Remover efeitos: disabledEffects
+          for (var indexDisable = 0; indexDisable < userPreferences.disabledEffects.length; indexDisable++) {
+            var disabledEffect = userPreferences.disabledEffects[indexDisable];
+            if (effect.tagName === disabledEffect.toUpperCase()) {
+              effect.parentNode.removeChild(effect)
+            }
+          }
+        }
+      }
+
+      /* Constroi um WebComponent Mulsemedia */
+      function buildEffectComponent(component, type) {
+        //Propertys
+        component.type = type
+        component.intensity = 0
+        component.startTime = 0
+        component.endTime = 0
+        component.executing = false
+
+        //Register a createdCallback
+        component.createdCallback = function () {
 
           //Get Tag Attributes
           this.intensity = parseFloat(this.getAttribute('intensity'))
@@ -443,23 +494,24 @@
           this.fadeIntensity = parseFloat(this.intensity)
           if (type == 'scent')
             this.type_scent = this.getAttribute('type_scent')
+        }
+        /*** Register the elements with the document (thatDoc) ***/
+        if (type == 'water-spray')
+          document.registerElement(type, { prototype: component })
+        else
+          document.registerElement(type + '-effect', { prototype: component })
       }
-      /*** Register the elements with the document (thatDoc) ***/
-      if (type == 'water-spray')
-        document.registerElement(type, {prototype: component})
-      else
-        document.registerElement(type+'-effect', {prototype: component})
-    }
 
-    function connectClassService(socket, message, parameters, element) {
-      // Request questions
-      socket.on('connect', function(){
-        console.log("connectClassService: conectado!")
-        socket.emit(message, parameters)
-      })
-      // Returned of the server
+      /* Funcao que conecta ao class-service */
+      function connectClassService(socket, message, parameters, element) {
+        // Request questions
+        socket.on('connect', function () {
+          console.log("connectClassService: conectado!")
+          socket.emit(message, parameters)
+        })
+        // Returned of the server
 
-      socket.on('results', function(results){
+        socket.on('results', function (results) {
           socket.disconnect()
           console.log("connectClassService: desconectado!")
           var percentualResult = 0
@@ -471,80 +523,78 @@
           // Quando receber resposta do servidor, dispara um evento
           $(element).trigger("responseClassService", [percentualResult])
 
-      })
-    }
+        })
+      }
 
-    function connectDealService(socket, message, parameters, element, response) {
-      // Request questions
-      socket.on('connect', function(){
-        console.log("conectado!")
-        socket.emit(message, parameters)
-      })
+      /* Funcao que conecta ao deal-service */
+      function connectDealService(socket, message, parameters, element, response) {
+        // Request questions
+        socket.on('connect', function () {
+          console.log("conectado!")
+          socket.emit(message, parameters)
+        })
 
-      // Returned of the server
-      socket.on('resultValidation', function(results){
+        // Returned of the server
+        socket.on('resultValidation', function (results) {
           socket.disconnect()
           // Quando receber resposta do servidor, dispara um evento
           $(element).trigger("responseDealService", [results])
-      })
-    }
-
-    function vibrate(duration) {
-        if(!(window.navigator.vibrate(duration)))
-            console.log('Not supported by browser')
-    }
-
-    function computeCondition(nServer, nCondition, op) {
-      switch (op) {
-        case '=':
-          return (nServer === nCondition)
-        case '>':
-          return (nServer > nCondition)
-        case '<':
-          return (nServer < nCondition)
-        case '>=':
-          return (nServer >= nCondition)
-        case '<=':
-          return (nServer <= nCondition)
-        case '!=':
-          return (nServer !== nCondition)
-        default:
-          return null
+        })
       }
-    }
-    
-    function getUserPreferences(path, success, error) {
-      var xhr = new XMLHttpRequest()
-      xhr.onreadystatechange = function() {
+
+      /* Funcao que ativa o vibration do smartphone */
+      function vibrate(duration) {
+        if (!(window.navigator.vibrate(duration)))
+          console.log('Not supported by browser')
+      }
+
+      /* Funcao que avalia a condicao do conditional-effect */
+      function computeCondition(nServer, nCondition, op) {
+        switch (op) {
+          case '=':
+            return (nServer === nCondition)
+          case '>':
+            return (nServer > nCondition)
+          case '<':
+            return (nServer < nCondition)
+          case '>=':
+            return (nServer >= nCondition)
+          case '<=':
+            return (nServer <= nCondition)
+          case '!=':
+            return (nServer !== nCondition)
+          default:
+            return null
+        }
+      }
+
+      /* Funcao que recupera as preferencias do usuario */
+      function getUserPreferences(path, success, error) {
+        var xhr = new XMLHttpRequest()
+        xhr.onreadystatechange = function () {
           if (xhr.readyState === XMLHttpRequest.DONE) {
-              if (xhr.status === 200) {
-                  if (success)
-                      success(JSON.parse(xhr.responseText))
-              } else {
-                  if (error)
-                      error(xhr)
-              }
+            if (xhr.status === 200) {
+              if (success)
+                success(JSON.parse(xhr.responseText))
+            } else {
+              if (error)
+                error(xhr)
+            }
           }
+        }
+        xhr.open("GET", path, true)
+        xhr.send()
       }
-      xhr.open("GET", path, true)
-      xhr.send()
-    }
-    /* 
-      Verificar e ajustar os efeitos de acordo com as preferencias do user
-      parametro de entrada: Objeto JSON
-    */
-    function verifyUserPreferences(userPreferences, effect) {
-
-      if (effect.intensity >= userPreferences.maxIntensity) 
-        effect.intensity = userPreferences.maxIntensity
-
-      if (effect.fadeIntensity >= userPreferences.maxIntensity) {
-        effect.fadeIntensity = userPreferences.maxIntensity - effect.fade
+      /* 
+        Verificar e ajustar os efeitos de acordo com as preferencias do user
+        parametro de entrada: Objeto JSON
+      */
+      function verifyMaxFadeIntensity(userPreferences, effect) {
+        if (effect.fadeIntensity >= userPreferences.maxIntensity) {
+          effect.fadeIntensity = userPreferences.maxIntensity - effect.fade
+        }
       }
 
-      return effect
-    }
-
-  }())
+    }())
   })
 </script>
