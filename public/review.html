@@ -1,26 +1,28 @@
 <!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="import" href="wc/mulsemedia-box.html">
 
-    <title>Sensory Classroom</title>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="import" href="wc/mulsemedia-box.html">
+
+	<title>Sensory Classroom</title>
 </head>
 
 <body>
 	<header>
 		<h1>Review Lesson 1</h1>
-        <hr>
-	</header><!-- /header -->
+		<hr>
+	</header>
+	<!-- /header -->
 
 	<section>
 		<div class="container">
 			<div class="row">
 				<div id="review" class="col-xs-12">
-				<!--
+					<!--
 					Seguir padrao:
 					<button></button>
 					<div class="review-box">img, text</div>
@@ -30,11 +32,12 @@
 						<!-- img is optional -->
 						<img id="img1" class="img-responsive center-block" src="http://placehold.it/800x600">
 						<!-- img is optional -->
-						<p class="text-center">“Hydraulic Energy is the type of energy that uses the power of moving water to produce energy like a wave or a water fall”</p>
+						<p class="text-center">“Hydraulic Energy is the type of energy that uses the power of moving water to produce energy like a wave or a water
+							fall”</p>
 						<!-- Effects -->
 						<!-- Box associada ao parent div -->
 
-						<mulsemedia-box idbind="img1" onClickStart="buttonImg1">              
+						<mulsemedia-box idbind="img1" onClickStart="buttonImg1">
 							<water-spray intensity="40.0" startTime="1" endTime="4"></water-spray>
 						</mulsemedia-box>
 					</div>
@@ -44,7 +47,8 @@
 						<!-- img is optional -->
 						<img id="img2" class="img-responsive center-block" src="img/wind.png">
 						<!-- img is optional -->
-						<p class="text-center">“Wind Power Energy is the type of energy that uses the wind produced by the movement of planet earth and the atmospheric phenomena”</p>
+						<p class="text-center">“Wind Power Energy is the type of energy that uses the wind produced by the movement of planet earth and the atmospheric
+							phenomena”</p>
 						<!-- Effects -->
 						<mulsemedia-box idBind="img2" onClickStart="buttonImg2">
 							<wind-effect intensity="60.0" startTime="1" endTime="infinite"></wind-effect>
@@ -67,26 +71,26 @@
 			</div>
 			<!-- Buttons -->
 			<div class="row">
-			    <div class="col-xs-6">
-			        <button type="button" class="btn btn-custom btn-block" onclick="location.href='video.html';">back</button>
-			    </div>
-			    <div class="col-xs-6">
-			        <button id="btn-quiz" type="button" class="btn btn-custom btn-block" onclick="checkQuiz()">Quiz</button>
-			    </div>
+				<div class="col-xs-6">
+					<button type="button" class="btn btn-custom btn-block" onclick="location.href='video.html';">back</button>
+				</div>
+				<div class="col-xs-6">
+					<button id="btn-quiz" type="button" class="btn btn-custom btn-block" onclick="checkQuiz()">Quiz</button>
+				</div>
 			</div>
 		</div>
 	</section>
 
-	 <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-xs-12">
-                    <p>Copyright &copy; Your App MulseMedia 2017</p>
-                </div>
-            </div>
-        </div>
-    </footer>
+	<!-- Footer -->
+	<footer>
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-12">
+					<p>Copyright &copy; Your App MulseMedia 2017</p>
+				</div>
+			</div>
+		</div>
+	</footer>
 </body>
 
 <script src="js/socket.io.min.js"></script>

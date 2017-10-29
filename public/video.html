@@ -1,8 +1,9 @@
 <!doctype html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/style.css">
 	<!-- WC MULSEMEDIa -->
@@ -17,8 +18,9 @@
 	<header>
 		<h1>Lesson option 1</h1>
 		<hr>
-	</header><!-- /header -->
-	
+	</header>
+	<!-- /header -->
+
 	<section>
 		<div class="container">
 			<!-- Video -->
@@ -32,7 +34,9 @@
 						funciona como um mapeamento do video para com sua box de efeito
 						for example -> id = "box-idvideo"
 					-->
-					<h1><input type="text" id="input-mbox" disabled></h1>
+					<h1>
+						<input type="text" id="input-mbox" disabled>
+					</h1>
 					<script>
 						//var arr = ['1','4','4','4','3']
 						var arr = 111111111111
@@ -40,30 +44,30 @@
 					</script>
 					<mulsemedia-box idBind="video1">
 						<conditional-effect service="dealService" in="input-mbox" ifReturn="1" op="=">
-								<scent-effect intensity="20" startTime="2" endTime="7" type_scent="popcorn"></scent-effect>
-								<wind-effect intensity="20" startTime="2" endTime="7"></wind-effect>
+							<scent-effect intensity="20" startTime="2" endTime="7" type_scent="popcorn"></scent-effect>
+							<wind-effect intensity="20" startTime="2" endTime="7"></wind-effect>
 						</conditional-effect>
 						<temperature-effect intensity="20" startTime="9" fade="0.5" endTime="18"></temperature-effect>
 						<scent-effect intensity="50.0" startTime="12" endTime="18" type_scent="combustion"></scent-effect>
-						
+
 						<wind-effect intensity="100" startTime="27.5" endTime="32"></wind-effect>
 						<light-effect intensity="95" startTime="27.5" endTime="32"></light-effect>
 						<temperature-effect intensity="90.0" startTime="27.5" endTime="32"></temperature-effect>
 						<fog-effect intensity="50.0" startTime="28.5" endTime="32"></fog-effect>
-						
+
 						<water-spray intensity="50" startTime="43" endTime="46"></water-spray>
 						<water-spray intensity="60" startTime="46" endTime="50"></water-spray>
 						<water-spray intensity="40" startTime="50" endTime="53"></water-spray>
-						
+
 						<light-effect intensity="80" startTime="54" endTime="112"></light-effect>
 						<light-effect intensity="10" fade="1" startTime="113" endTime="115"></light-effect>
 						<light-effect intensity="80" fade="1" startTime="115" endTime="119"></light-effect>
 						<temperature-effect intensity="40.0" startTime="120" endTime="123"></temperature-effect>
 					</mulsemedia-box>
 				</div>
-				
+
 			</div>
-			
+
 			<!-- Buttons -->
 			<div class="row">
 				<div class="col-xs-6">
@@ -75,7 +79,7 @@
 			</div>
 		</div>
 	</section>
-	
+
 	<!-- Footer -->
 	<footer>
 		<div class="container">
@@ -87,4 +91,5 @@
 		</div>
 	</footer>
 </body>
+
 </html>

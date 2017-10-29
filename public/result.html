@@ -1,40 +1,44 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="import" href="wc/mulsemedia-box.html">
-    <script src="js/socket.io.min.js"></script>
-    <script src="js/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <title>Sensory Classroom</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="import" href="wc/mulsemedia-box.html">
+  <script src="js/socket.io.min.js"></script>
+  <script src="js/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <title>Sensory Classroom</title>
 </head>
 
 <body>
-	<header>
-		<div class="row">
-			<div class="col-xs-12">
-				<h1>You selected</h1>
+  <header>
+    <div class="row">
+      <div class="col-xs-12">
+        <h1>You selected</h1>
         <!--
           Input que recebera da page quiz.html o que o usuario selecionou.
           Seu "id" sera passado como parametro de entrada para o conditional-effect que
           fara a avalicao do resultado.
         -->
-        <h1><input type="text" id="input-mbox" disabled></h1>
-				<hr>
-			</div>
-		</div>
-	</header><!-- /header -->
+        <h1>
+          <input type="text" id="input-mbox" disabled>
+        </h1>
+        <hr>
+      </div>
+    </div>
+  </header>
+  <!-- /header -->
 
-	<section>
-		<div class="container">
-			<!-- details -->
-			<div class="row">
-				<div id="box-here" class="col-xs-12">
+  <section>
+    <div class="container">
+      <!-- details -->
+      <div class="row">
+        <div id="box-here" class="col-xs-12">
 
-					<!-- <ul class="list-group"></ul> -->
+          <!-- <ul class="list-group"></ul> -->
 
           <!-- <button type="button" class="btn btn-custom btn-block" id="startMulsemediaBox">Check result</button> -->
           <!-- Caso queira que inicie com click, adicionar atributo 'onClickStart' na tag MulsemediaBox -->
@@ -42,51 +46,51 @@
 
             <conditional-effect service="classService" in="input-mbox" ifReturn="100" op="=">
               <light-effect intensity='50.0' startTime='0' endTime='2'></light-effect>
-        			<vibration-effect intensity='35.0' startTime='0' endTime='2'></vibration-effect>
-        			<light-effect intensity='50.0' startTime='4' endTime='6'></light-effect>
-        			<vibration-effect intensity='35.0' startTime='4' endTime='6'></vibration-effect>
-        			<light-effect  intensity='50.0' startTime='8' endTime='10'></light-effect>
-        			<vibration-effect intensity='35.0' startTime='8' endTime='10'></vibration-effect>
-        			<light-effect intensity='50.0' startTime='12' endTime='14'></light-effect>
-        			<vibration-effect intensity='35.0' startTime='12' endTime='14'></vibration-effect>
+              <vibration-effect intensity='35.0' startTime='0' endTime='2'></vibration-effect>
+              <light-effect intensity='50.0' startTime='4' endTime='6'></light-effect>
+              <vibration-effect intensity='35.0' startTime='4' endTime='6'></vibration-effect>
+              <light-effect intensity='50.0' startTime='8' endTime='10'></light-effect>
+              <vibration-effect intensity='35.0' startTime='8' endTime='10'></vibration-effect>
+              <light-effect intensity='50.0' startTime='12' endTime='14'></light-effect>
+              <vibration-effect intensity='35.0' startTime='12' endTime='14'></vibration-effect>
             </conditional-effect>
 
             <conditional-effect service="classService" in="input-mbox" ifReturn="70" op="<">
               <fog-effect intensity='50.0' startTime='0' endTime='2'></fog-effect>
-        			<vibration-effect intensity='35.0' startTime='0' endTime='2'></vibration-effect>
-        			<fog-effect intensity='50.0' startTime='4' endTime='6'></fog-effect>
-        			<vibration-effect intensity='35.0' startTime='4' endTime='6'></vibration-effect>
-        			<fog-effect  intensity='50.0' startTime='8' endTime='10'></fog-effect>
-        			<vibration-effect intensity='35.0' startTime='8' endTime='10'></vibration-effect>
-        			<fog-effect intensity='50.0' startTime='12' endTime='14'></fog-effect>
-        			<vibration-effect intensity='35.0' startTime='12' endTime='14'></vibration-effect>
+              <vibration-effect intensity='35.0' startTime='0' endTime='2'></vibration-effect>
+              <fog-effect intensity='50.0' startTime='4' endTime='6'></fog-effect>
+              <vibration-effect intensity='35.0' startTime='4' endTime='6'></vibration-effect>
+              <fog-effect intensity='50.0' startTime='8' endTime='10'></fog-effect>
+              <vibration-effect intensity='35.0' startTime='8' endTime='10'></vibration-effect>
+              <fog-effect intensity='50.0' startTime='12' endTime='14'></fog-effect>
+              <vibration-effect intensity='35.0' startTime='12' endTime='14'></vibration-effect>
             </conditional-effect>
 
           </mulsemedia-box>
 
-					<h1 id="performance"></h1>
-				</div>
-			</div>
-
-			<!-- Buttons -->
-			<div class="row">
-			    <div class="col-xs-6 col-xs-offset-3">
-			        <button type="button" class="btn btn-custom btn-block" onclick="location.href='index.html'">home</button>
-			    </div>
-			</div>
-		</div>
-	</section>
-
-	 <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-xs-12">
-                    <p>Copyright &copy; Your App MulseMedia 2017</p>
-                </div>
-            </div>
+          <h1 id="performance"></h1>
         </div>
-    </footer>
+      </div>
+
+      <!-- Buttons -->
+      <div class="row">
+        <div class="col-xs-6 col-xs-offset-3">
+          <button type="button" class="btn btn-custom btn-block" onclick="location.href='index.html'">home</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12">
+          <p>Copyright &copy; Your App MulseMedia 2017</p>
+        </div>
+      </div>
+    </div>
+  </footer>
 
   <script type="text/javascript">
     $(function () {
@@ -98,4 +102,5 @@
   </script>
 
 </body>
+
 </html>

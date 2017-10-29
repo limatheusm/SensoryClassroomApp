@@ -21,11 +21,11 @@
 		listBtnReview[index].addEventListener('click', () => {
 			toggleElement(box)
 		})
-		index++	
+		index++
 	})
 
-	
-	
+
+
 	/** Helper **/
 	function getChildrensByTag(element, tagName) {
 		var childrens = element.children
@@ -37,12 +37,12 @@
 					childrensByTag.push(element)
 				}
 			}
-			
+
 		}
 		return childrensByTag
 	}
 
-	function addActionInListOfElements (list, action) {
+	function addActionInListOfElements(list, action) {
 		for (var i = 0; i < list.length; i++) {
 			if (list[i]) {
 				action(list[i])
