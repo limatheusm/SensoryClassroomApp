@@ -16,7 +16,7 @@
 
 	// Request questions
 	socket.on('connect', function(){
-    console.log("conectado!")
+    console.log("getQuestions: conectado!")
 		socket.emit('getQuestions')
 	})
 
@@ -56,7 +56,7 @@
 			}
 			else { 
 				//Finalizou Quiz				
-				localStorage.setItem("answer", answer)
+				localStorage.setItem("answer", answer)				
 				location.href = 'result.html'
 			}
 			
