@@ -36,13 +36,14 @@
 					-->
 					<h1>
 						<input type="text" id="input-mbox" disabled>
+						<button id="buy">Comprar</button>
 					</h1>
 					<script>
 						//var arr = ['1','4','4','4','3']
 						var arr = 111111111111
 						$('#input-mbox').val(arr)
 					</script>
-					<mulsemedia-box idBind="video1">
+					<mulsemedia-box onClickStart="buy" idBind="video1">
 						<conditional-effect service="dealService" in="input-mbox" ifReturn="1" op="=">
 							<scent-effect intensity="20" startTime="2" endTime="7" type_scent="popcorn"></scent-effect>
 							<wind-effect intensity="20" startTime="2" endTime="7"></wind-effect>

@@ -1,7 +1,6 @@
 {
     "maxIntensity": 30,
     "disabledEffects": [
-        "scent-effect",
-        "wind-effect"
+
     ]
 }
